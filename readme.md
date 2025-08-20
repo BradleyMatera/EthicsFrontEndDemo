@@ -30,11 +30,13 @@ This project demonstrates three ways to manage secrets in a Node.js app, and bes
 3. Use the dropdowns to show/hide secrets and see how each method works
 
 ## Keeping Secrets Safe
+
 - **Never commit secrets to your repo!**
 - Use `.gitignore` to hide `/secrets/secrets.json` and `.env`
 - Use real secrets managers (AWS, HashiCorp Vault, etc.) for production
 
 ## Resources
+
 - [HashiCorp 5 Best Practices for Secrets Management](https://www.hashicorp.com/resources/5-best-practices-for-secrets-management)
 
 ---
