@@ -35,6 +35,22 @@ This project demonstrates three ways to manage secrets in a Node.js app, and bes
 - Use `.gitignore` to hide `/secrets/secrets.json` and `.env`
 - Use real secrets managers (AWS, HashiCorp Vault, etc.) for production
 
+## Understanding Secrets
+
+1. Central secrets control plane
+    One spot where all the secrets live, instead of random files and passwords spread all over.
+2. Access control lists (ACLs)
+    A list that says who can see what. Not everyone should see every secret.
+3. Dynamic secrets
+    Secrets that change or expire. Like instead of giving someone a password forever, it only works for a short time.
+4. Encryption as a service
+    A tool or service that handles the math of locking and unlocking data so you don't have to build it yourself.
+5. Auditing
+    Keeping track of who touched what secret and when, so you can see if something shady happened.
+Keeping track of who touched what secret and when, so you can see if something shady happened.
+
+⸻
+
 ## Resources
 
 - [HashiCorp 5 Best Practices for Secrets Management](https://www.hashicorp.com/resources/5-best-practices-for-secrets-management)
