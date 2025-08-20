@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Non-shared Secret Demo</title>
+</head>
+<body>
+  <h1>Non-shared Secret Demo</h1>
+  <p>This demo shows a Node.js app using a <code>.env</code> file (not in repo).</p>
+  <pre><code>API_KEY=supersecret
+
+require("dotenv").config();
+console.log("API key:", process.env.API_KEY);</code></pre>
+  <p><strong>Best Practice:</strong> The <code>.env</code> file is listed in <code>.gitignore</code> and not pushed to the repo. You must create your own <code>.env</code> file to run the app.</p>
+  <p>See the <a href="https://github.com/BradleyMatera/env-demo" target="_blank" rel="noopener">GitHub repo</a> for instructions.</p>
+</body>
+</html>
