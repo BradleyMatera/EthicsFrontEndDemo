@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shared Secret Demo</title>
+</head>
+<body>
+  <h1>Shared Secret Demo</h1>
+  <p>This demo shows a Node.js app using a shared <code>secrets.json</code> file.</p>
+  <pre><code>{
+  "dbPassword": "mypassword"
+}
+
+const secrets = require("./secrets.json");
+console.log("dbPassword is:", secrets.dbPassword);</code></pre>
+  <p><strong>Risk:</strong> The secrets file is in the repo, so anyone who downloads it can see the secret.</p>
+  <p>See the <a href="https://github.com/BradleyMatera/shared-demo" target="_blank" rel="noopener">GitHub repo</a> for instructions.</p>
+</body>
+</html>
