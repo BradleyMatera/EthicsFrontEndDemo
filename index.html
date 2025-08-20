@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Node Secrets Assignment in my words</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Node Secrets Assignment</h1>
+    <p><strong>Due:</strong> Sun, Aug 24, 2025 @ 10:59 PM CDT • 20% weight</p>
+
+    <h2>Summary</h2>
+    <p>
+      Show 3 different ways of using secrets with a simple node app. Don’t keep
+      hard coded or plaintext passwords around if you can help it. Best way is
+      to use a real secrets manager like AWS Secrets Manager, but here we just
+      demo 3 ways.
+    </p>
+
+    <h2>Best Practices</h2>
+    <ul>
+      <li>Central secrets control plane</li>
+      <li>Access control lists (ACLs)</li>
+      <li>Dynamic secrets</li>
+      <li>Encryption as a service</li>
+      <li>Auditing</li>
+    </ul>
+
+    <h2>1. Hard coded secret</h2>
+    <p>
+      Make a repo with a simple node app. Hard code one variable (like a fake
+      API key) and use it in your app. Example:
+    </p>
+    <div>
+      <label for="hardcodedDropdown">Show hardcoded secret:</label>
+      <select id="hardcodedDropdown">
+        <option value="hidden">Hidden</option>
+        <option value="shown">Shown</option>
+      </select>
+    <pre id="hardcodedSecret" class="secret-block hidden"><code>const secretKey = "hardcoded123";
+console.log("My secret is:", secretKey);</code></pre>
+    </div>
+
+    <h2>2. Shared secrets file (all files in repo)</h2>
+    <p>
+      Put a <code>secrets.json</code> file in your repo. Push it to GitHub. When
+      I clone your repo and run it, the app should work with those secrets. Then
+      see if GitHub complains.
+    </p>
+    <div>
+      <label for="sharedDropdown">Show shared secret:</label>
+      <select id="sharedDropdown">
+        <option value="hidden">Hidden</option>
+        <option value="shown">Shown</option>
+      </select>
+    <pre id="sharedSecret" class="secret-block hidden"><code>// secrets.json
+{
+  "dbPassword": "mypassword"
+}
+
+// app.js
+const secrets = require("./secrets.json");
+console.log("dbPassword is:", secrets.dbPassword);</code></pre>
+    </div>
+
+    <h2>3. Non-shared secrets file</h2>
+    <p>
+      No hard coded secrets, no secrets file in repo. Use a <code>.env</code>
+      file that is not committed. The app should break without it, and in your
+      README explain what secret is needed.
+    </p>
+    <div>
+      <label for="envDropdown">Show .env secret:</label>
+      <select id="envDropdown">
+        <option value="hidden">Hidden</option>
+        <option value="shown">Shown</option>
+      </select>
+    <pre id="envSecret" class="secret-block hidden"><code>// .env (not in repo)
+API_KEY=supersecret
+
+// app.js
+require("dotenv").config();
+console.log("API key:", process.env.API_KEY);</code></pre>
+    </div>
+
+    <h2>Resources</h2>
+    <p>
+      <a href="https://www.hashicorp.com/resources/5-best-practices-for-secrets-management" target="_blank" rel="noopener noreferrer">
+        HashiCorp 5 Best Practices for Secrets Management
+      </a>
+    </p>
+    <script src="main.js"></script>
+  </body>
+</html>
