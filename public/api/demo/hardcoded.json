@@ -1,0 +1,15 @@
+{
+  "demoType": "hardcoded",
+  "status": "insecure",
+  "severity": "critical",
+  "exposurePath": [
+    "Developer commits AWS key to GitHub",
+    "Automated bot scrapes repository within minutes",
+    "Attacker enumerates S3 buckets and snapshots databases"
+  ],
+  "recommendedMitigations": [
+    "Rotate the exposed credentials immediately",
+    "Invalidate long-lived tokens from your cloud provider dashboard",
+    "Add secret scanning to your CI/CD pipeline before merge"
+  ]
+}

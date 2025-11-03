@@ -85,10 +85,15 @@ src/
 │   │   └── environment-variables/ # Environment vars demo
 │   └── best-practices/          # Comprehensive guide
 ├── components/
-│   ├── navigation.tsx           # Site navigation
+│   ├── navigation.tsx           # Global navigation bar
+│   ├── footer.tsx               # Persistent footer
+│   ├── Breadcrumb.tsx           # Reusable breadcrumb trail
+│   ├── TutorialProgress.tsx     # Progress tracker widget
 │   ├── providers.tsx            # Theme and UI providers
 │   └── ui/
 │       └── code-block.tsx       # Interactive code component
+├── public/
+│   └── api/                     # Static JSON used for static hosting
 ```
 
 ## 🔗 Demo Repositories
@@ -124,6 +129,25 @@ This application can be deployed to:
 - **Netlify**: Static site generation support
 - **Docker**: Container-based deployment
 - **Traditional hosting**: Static export support
+
+### GitHub Pages Deployment
+
+GitHub Pages serves static files, so export the site and commit the generated `docs` directory:
+
+```bash
+# Build the static site with the correct base path
+bun run build:pages
+
+# Verify the docs folder locally if needed
+npx serve docs
+
+# Commit the docs folder and push to your GitHub Pages branch or repo
+git add docs
+git commit -m "chore: update GitHub Pages build"
+git push
+```
+
+The build script sets `NEXT_PUBLIC_BASE_PATH=/EthicsFrontEndDemo` automatically, matching the project page URL `https://bradleymatera.github.io/EthicsFrontEndDemo/`. Adjust the environment variable if you host the files under a different path.
 
 ## 🔒 Security Notes
 

@@ -1,0 +1,15 @@
+{
+  "demoType": "environment-variables",
+  "status": "secure",
+  "severity": "low",
+  "validationChecklist": [
+    "Secrets loaded exclusively from process environment",
+    "Required variables validated during application boot",
+    "Different credentials per environment with rotation policy"
+  ],
+  "recommendedTooling": [
+    "direnv or dotenv for local parity",
+    "Platform secret stores (Vercel, Netlify, AWS SSM)",
+    "Automated rotation via GitHub Actions or Terraform"
+  ]
+}
