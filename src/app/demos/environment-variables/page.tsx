@@ -226,6 +226,58 @@ DEBUG=false`
     }
   ];
 
+  const labScenarios = [
+    {
+      title: "Local Setup",
+      steps: [
+        "Copy .env.template to .env.local and fill in placeholder values",
+        "Run validation script to ensure all variables are present",
+        "Start the app and verify secrets are not logged or exposed"
+      ]
+    },
+    {
+      title: "CI Pipeline",
+      steps: [
+        "Configure environment variables in your CI system",
+        "Add a step that fails the build if required variables are missing",
+        "Mask secrets in build logs and artifact uploads"
+      ]
+    },
+    {
+      title: "Rotation Drill",
+      steps: [
+        "Rotate one credential in the .env file",
+        "Propagate the change across environments using automation",
+        "Confirm that old credentials are no longer accepted"
+      ]
+    }
+  ];
+
+  const rolloutPlan = {
+    kickoff: [
+      "Inventory all services and credentials",
+      "Create .env.example documenting required variables",
+      "Agree on naming conventions and casing"
+    ],
+    implementation: [
+      "Add validation at application boot",
+      "Store secrets in platform-specific secret stores",
+      "Add scripts to sync secrets for developers"
+    ],
+    sustainment: [
+      "Schedule rotation and access reviews",
+      "Monitor for usage of default or placeholder values",
+      "Automate alerts for missing variables in deployments"
+    ]
+  };
+
+  const observabilityChecklist = [
+    "Dashboards tracking last rotation time per secret",
+    "Alerts when environment variables change unexpectedly",
+    "Audit logs for who accessed or modified secrets",
+    "Synthetic tests verifying secrets are loaded at runtime"
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
       <main className="container mx-auto px-4 py-8 max-w-6xl">
@@ -333,6 +385,73 @@ DEBUG=false`
             ))}
           </div>
         </div>
+
+        <Divider className="my-12" />
+
+        <div className="grid gap-6 md:grid-cols-2 mb-12">
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Lab Scenarios</h3>
+            </CardHeader>
+            <CardBody className="space-y-4">
+              {labScenarios.map((scenario) => (
+                <div key={scenario.title}>
+                  <p className="font-medium text-foreground-600 mb-2">{scenario.title}</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                    {scenario.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Observability Checklist</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                {observabilityChecklist.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Rollout Plan</h3>
+          </CardHeader>
+          <CardBody className="grid gap-6 md:grid-cols-3">
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Kickoff</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {rolloutPlan.kickoff.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Implementation</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {rolloutPlan.implementation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Sustainment</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {rolloutPlan.sustainment.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </CardBody>
+        </Card>
 
         {/* Production Considerations */}
         <Card className="mb-12">

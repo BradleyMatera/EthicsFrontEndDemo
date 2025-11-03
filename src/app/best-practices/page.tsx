@@ -256,6 +256,65 @@ const decrypted = await vault.write('transit/decrypt/customer-data', {
     }
   ];
 
+  const operatingModel = [
+    {
+      role: "Secrets Owner",
+      responsibilities: [
+        "Defines policy, rotation cadence, and tooling",
+        "Approves new secret creation and deletion",
+        "Coordinates cross-team adoption"
+      ]
+    },
+    {
+      role: "Platform Engineer",
+      responsibilities: [
+        "Implements automation and integrations",
+        "Maintains CI/CD secret distribution",
+        "Monitors for drift and regressions"
+      ]
+    },
+    {
+      role: "Application Team",
+      responsibilities: [
+        "Consumes secrets following documented practices",
+        "Flags new secret requirements early",
+        "Participates in rotation drills"
+      ]
+    },
+    {
+      role: "Security & Compliance",
+      responsibilities: [
+        "Conducts periodic audits and tabletop exercises",
+        "Responds to incidents and ensures evidence capture",
+        "Reports posture to leadership"
+      ]
+    }
+  ];
+
+  const auditChecklist = [
+    "Every secret has an owner and documented purpose",
+    "Rotation dates are logged and within policy",
+    "Access control lists align with least privilege",
+    "Alerts exist for anomalous secret usage",
+    "Backups and recovery procedures are tested"
+  ];
+
+  const communicationPlan = [
+    "Slack channel and email alias for secret incidents",
+    "Runbook stored in shared knowledge base",
+    "Quarterly lunch-and-learn reviewing new tooling",
+    "Onboarding checklist covering secrets hygiene",
+    "Offboarding checklist ensuring access revocation"
+  ];
+
+  const successMetrics = [
+    "Mean time to rotate credentials after detection",
+    "Number of secrets with undefined owners",
+    "Percentage of services using managed secret stores",
+    "Incidents caused by secrets in the last quarter",
+    "Audit findings resolved within SLA"
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
       <main className="container mx-auto px-4 py-8 max-w-7xl">
@@ -421,6 +480,69 @@ const decrypted = await vault.write('transit/decrypt/customer-data', {
             ))}
           </div>
         </div>
+
+        <Divider className="my-12" />
+
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">Operating Model</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {operatingModel.map((role) => (
+              <Card key={role.role}>
+                <CardHeader>
+                  <h3 className="text-lg font-semibold">{role.role}</h3>
+                </CardHeader>
+                <CardBody>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-600">
+                    {role.responsibilities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 mb-16">
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Audit Readiness Checklist</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                {auditChecklist.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Communication Plan</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                {communicationPlan.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Key Success Metrics</h3>
+          </CardHeader>
+          <CardBody>
+            <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+              {successMetrics.map((metric) => (
+                <li key={metric}>{metric}</li>
+              ))}
+            </ul>
+          </CardBody>
+        </Card>
 
         {/* Resources */}
         <Card className="mb-12">

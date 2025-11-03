@@ -157,6 +157,58 @@ module.exports = {
     }
   ];
 
+  const labExercises = [
+    {
+      title: "Reproduce the Leak",
+      steps: [
+        "Clone the shared secrets demo and inspect the repository history",
+        "Check CI logs and artifacts for traces of secrets.json",
+        "Use a GitHub personal access token to verify access levels"
+      ]
+    },
+    {
+      title: "Simulate a Contractor",
+      steps: [
+        "Create a new read-only collaborator and clone the repo",
+        "List every secret accessible with that single permission",
+        "Attempt to use the secrets to access production-like services"
+      ]
+    },
+    {
+      title: "Incident Review",
+      steps: [
+        "Draft an incident timeline from discovery to containment",
+        "Identify logs and alerts that should have fired but did not",
+        "Capture remediation tasks and owners"
+      ]
+    }
+  ];
+
+  const migrationTimeline = {
+    week1: [
+      "Inventory every secrets.* or config.* file committed to the repo",
+      "Create configuration templates that exclude sensitive values",
+      "Update documentation explaining the new separation"
+    ],
+    week2: [
+      "Introduce environment variable loading with validation",
+      "Set up secret scanning in CI and pre-push hooks",
+      "Ensure pipeline secrets are stored outside of version control"
+    ],
+    week3: [
+      "Rotate exposed credentials and remove secrets files from history",
+      "Schedule access reviews for teams that previously read secrets",
+      "Train developers on the new workflow and escalation paths"
+    ]
+  };
+
+  const governanceQuestions = [
+    "Who approves access to shared secret files today?",
+    "How quickly can you revoke access if a contractor leaves?",
+    "What downstream systems break if secrets.json is removed?",
+    "Do you have monitoring for commits that reintroduce secrets?"
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
       <main className="container mx-auto px-4 py-8 max-w-6xl">
@@ -273,6 +325,73 @@ module.exports = {
             ))}
           </div>
         </div>
+
+        <Divider className="my-12" />
+
+        <div className="grid gap-6 md:grid-cols-2 mb-12">
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Guided Lab Exercises</h3>
+            </CardHeader>
+            <CardBody className="space-y-4">
+              {labExercises.map((exercise) => (
+                <div key={exercise.title}>
+                  <p className="font-medium text-foreground-600 mb-2">{exercise.title}</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                    {exercise.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Governance Questions</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                {governanceQuestions.map((question) => (
+                  <li key={question}>{question}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Three-Week Migration Timeline</h3>
+          </CardHeader>
+          <CardBody className="grid gap-6 md:grid-cols-3">
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Week 1</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationTimeline.week1.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Week 2</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationTimeline.week2.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Week 3</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationTimeline.week3.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </CardBody>
+        </Card>
 
         {/* GitHub Security Features */}
         <Card className="mb-12">

@@ -12,7 +12,8 @@ import {
   TableColumn,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  Divider,
 } from "@nextui-org/react";
 import { 
   AlertTriangle, 
@@ -118,6 +119,58 @@ export default function ComparisonPage() {
       shared: { status: "warning", text: "Files must be deployed" },
       env: { status: "warning", text: "Environment setup required" }
     }
+  ];
+
+  const scenarioGuides = [
+    {
+      name: "Small Team Prototype",
+      considerations: [
+        "Start with environment variables and a shared password manager",
+        "Add pre-commit hooks to prevent accidental commits",
+        "Schedule a monthly review as the team grows"
+      ]
+    },
+    {
+      name: "Growing SaaS Startup",
+      considerations: [
+        "Adopt a managed secrets store (AWS SSM, Doppler, 1Password) early",
+        "Automate rotation with CI/CD pipelines",
+        "Introduce role-based access control and onboarding workflows"
+      ]
+    },
+    {
+      name: "Enterprise Platform",
+      considerations: [
+        "Centralise secrets in a dedicated vault with hardware backing",
+        "Integrate secrets governance with compliance tooling",
+        "Implement real-time monitoring and anomaly detection"
+      ]
+    }
+  ];
+
+  const migrationChecklist = {
+    discovery: [
+      "Audit repositories for committed secrets and shared secret files",
+      "Catalogue services depending on existing credentials",
+      "Identify owners and consumers for each secret"
+    ],
+    execution: [
+      "Remove secrets from version control and rotate them",
+      "Introduce environment variable loading with validation",
+      "Set up CI/CD secrets and block insecure merges"
+    ],
+    reinforcement: [
+      "Train teams and update documentation",
+      "Add monitoring and alerts for regressions",
+      "Schedule regular audits and tabletop exercises"
+    ]
+  };
+
+  const workshopPrompts = [
+    "Which systems would be impacted if a secret rotated unexpectedly?",
+    "How fast can we revoke access for a departing contractor?",
+    "What evidence would we present during a security audit?",
+    "Where do we store runbooks for incident response?"
   ];
 
   const getStatusIcon = (status: string) => {
@@ -310,6 +363,70 @@ export default function ComparisonPage() {
                 </p>
               </div>
             </div>
+          </CardBody>
+        </Card>
+
+        <Divider className="my-12" />
+
+        <div className="grid gap-6 md:grid-cols-3 mb-12">
+          {scenarioGuides.map((scenario) => (
+            <Card key={scenario.name}>
+              <CardHeader>
+                <h3 className="text-lg font-semibold">{scenario.name}</h3>
+              </CardHeader>
+              <CardBody>
+                <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-600">
+                  {scenario.considerations.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Migration Checklist</h3>
+          </CardHeader>
+          <CardBody className="grid gap-6 md:grid-cols-3">
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Discovery</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationChecklist.discovery.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Execution</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationChecklist.execution.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground-600 mb-2">Reinforcement</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                {migrationChecklist.reinforcement.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Workshop Prompts</h3>
+          </CardHeader>
+          <CardBody>
+            <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+              {workshopPrompts.map((prompt) => (
+                <li key={prompt}>{prompt}</li>
+              ))}
+            </ul>
           </CardBody>
         </Card>
 

@@ -9,6 +9,8 @@ import {
   Button, 
   Chip,
   Divider,
+  Tabs,
+  Tab,
 } from "@nextui-org/react";
 import { 
   Shield, 
@@ -60,6 +62,104 @@ export default function Home() {
       href: "/comparison",
       examples: ["Security analysis", "Feature comparison", "Migration guide"],
     },
+  ];
+
+  const learningModules = [
+    {
+      key: "foundations",
+      title: "Module 1 · Foundations",
+      subtitle: "Set expectations and baseline awareness across the team",
+      objectives: [
+        "Install Bun, clone the repository, and run the project locally",
+        "Align on terminology: secrets, credentials, keys, tokens",
+        "Capture the current state of secrets usage in your apps"
+      ],
+      deliverables: [
+        "Local environment checklist signed off",
+        "Baseline screenshot of insecure secret exposure",
+        "Stakeholder map showing who touches secrets today"
+      ]
+    },
+    {
+      key: "exposure",
+      title: "Module 2 · Exposure Drills",
+      subtitle: "Experience the failure modes firsthand",
+      objectives: [
+        "Run each insecure demo and capture console output",
+        "Document the attack path and timeline for every breach scenario",
+        "List monitoring or logging gaps that made detection harder"
+      ],
+      deliverables: [
+        "Incident-style write-up for hardcoded secrets",
+        "Incident-style write-up for shared secrets",
+        "Rotation plan for any real credentials uncovered"
+      ]
+    },
+    {
+      key: "hardening",
+      title: "Module 3 · Hardening",
+      subtitle: "Replace insecure patterns with the .env workflow",
+      objectives: [
+        "Create environment-specific .env files with validation",
+        "Integrate CI and deployment secrets for production parity",
+        "Automate local setup with scripts or task runners"
+      ],
+      deliverables: [
+        "Validated .env.example file checked into version control",
+        "Automation scripts for loading secrets locally and in CI",
+        "Documented rotation cadence for each credential"
+      ]
+    },
+    {
+      key: "operations",
+      title: "Module 4 · Operations",
+      subtitle: "Make secure secrets management a habit",
+      objectives: [
+        "Define ownership, escalation paths, and review cadence",
+        "Configure monitoring, alerting, and dashboards for secrets",
+        "Create onboarding/offboarding flows for privileged access"
+      ],
+      deliverables: [
+        "Secrets governance charter",
+        "Alert runbook for suspected compromise",
+        "Quarterly audit checklist ready for compliance"
+      ]
+    }
+  ];
+
+  const adoptionChecklist = [
+    "Select a secrets manager or platform secrets store",
+    "Catalogue every credential used across environments",
+    "Automate rotation and expiry alerts",
+    "Document recovery procedures for compromised credentials",
+    "Train teams on onboarding, usage, and revocation workflows"
+  ];
+
+  const practitionerToolkit = [
+    {
+      name: "Discovery",
+      items: [
+        "truffleHog / gitleaks git history scans",
+        "CI secret scanning hooks",
+        "Dependency inventory with secret usage annotations"
+      ]
+    },
+    {
+      name: "Implementation",
+      items: [
+        "dotenv-safe validation script",
+        "Pre-commit hooks preventing accidental secret commits",
+        "CLI helpers for local environment injection"
+      ]
+    },
+    {
+      name: "Operations",
+      items: [
+        "Rotation scheduler and reminder system",
+        "Access review templates (quarterly/annual)",
+        "Incident response playbooks for leaked credentials"
+      ]
+    }
   ];
 
   return (
@@ -184,6 +284,46 @@ export default function Home() {
           </div>
         </div>
 
+        <Divider className="my-12" />
+
+        {/* Guided Curriculum */}
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-center mb-4">Guided Curriculum</h2>
+          <p className="text-foreground-600 text-center max-w-3xl mx-auto mb-8">
+            Follow the curriculum to move from awareness to production-grade governance. Each module spells out objectives,
+            exit criteria, and artefacts you should produce along the way.
+          </p>
+          <Tabs aria-label="Learning modules" color="primary" variant="underlined" className="max-w-5xl mx-auto">
+            {learningModules.map((module) => (
+              <Tab key={module.key} title={module.title} className="text-left">
+                <Card>
+                  <CardHeader className="flex flex-col items-start gap-2">
+                    <p className="text-sm uppercase tracking-wide text-foreground-400">{module.subtitle}</p>
+                    <h3 className="text-xl font-semibold">Learning Objectives</h3>
+                  </CardHeader>
+                  <CardBody className="space-y-6">
+                    <div>
+                      <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                        {module.objectives.map((objective) => (
+                          <li key={objective}>{objective}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground-500 mb-2">Exit Criteria</p>
+                      <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                        {module.deliverables.map((deliverable) => (
+                          <li key={deliverable}>{deliverable}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Tab>
+            ))}
+          </Tabs>
+        </section>
+
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2 bg-warning-50 border-warning-200">
             <CardBody>
@@ -202,6 +342,48 @@ export default function Home() {
 
           <TutorialProgress />
         </div>
+
+        <Divider className="my-12" />
+
+        {/* Adoption Checklist & Toolkit */}
+        <section className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <div>
+                <h3 className="text-xl font-semibold">Adoption Checklist</h3>
+                <p className="text-sm text-foreground-500">Mark these milestones as you roll the programme out.</p>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <ol className="list-decimal space-y-2 pl-5 text-foreground-600">
+                {adoptionChecklist.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div>
+                <h3 className="text-xl font-semibold">Practitioner Toolkit</h3>
+                <p className="text-sm text-foreground-500">Keep these tools handy for discovery, implementation, and operations.</p>
+              </div>
+            </CardHeader>
+            <CardBody className="space-y-4">
+              {practitionerToolkit.map((group) => (
+                <div key={group.name}>
+                  <p className="font-medium text-foreground-600 mb-2">{group.name}</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                    {group.items.map((tool) => (
+                      <li key={tool}>{tool}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+        </section>
 
         {/* Footer */}
         <div className="text-center mt-12 pt-8 border-t border-divider">

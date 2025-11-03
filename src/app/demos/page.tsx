@@ -45,6 +45,25 @@ const demos = [
   },
 ];
 
+const prework = [
+  "Skim the README to understand the project structure",
+  "Run bun run build:pages once to ensure tooling works",
+  "List the secrets used by your real-world applications"
+];
+
+const postwork = [
+  "Create remediation tickets for insecure patterns",
+  "Share lessons learned with your broader engineering team",
+  "Schedule a follow-up to verify the new workflow is adopted"
+];
+
+const assessmentCriteria = [
+  "You can explain the risks of each approach to a stakeholder",
+  "Your repo contains validated .env templates instead of secrets",
+  "Rotation and incident response playbooks are documented",
+  "You have monitoring in place for secrets regressions"
+];
+
 export default function DemosOverviewPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
@@ -131,6 +150,49 @@ export default function DemosOverviewPage() {
           </Card>
 
           <TutorialProgress />
+        </div>
+
+        <div className="my-12" />
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Before You Begin</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-sm text-foreground-600">
+                {prework.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">After Each Demo</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-sm text-foreground-600">
+                {postwork.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Assessment Criteria</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-sm text-foreground-600">
+                {assessmentCriteria.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
         </div>
       </main>
     </div>

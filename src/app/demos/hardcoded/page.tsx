@@ -92,6 +92,58 @@ const token = jwt.sign({ userId: 123 }, SECRET, { expiresIn: '1h' });`,
     }
   ];
 
+  const labSteps = [
+    {
+      title: "Trigger the Issue",
+      items: [
+        "Clone the demo repository and run the script",
+        "Commit a change that prints the secret to console",
+        "Inspect git history to show the secret remains accessible"
+      ]
+    },
+    {
+      title: "Attack Path",
+      items: [
+        "Simulate a malicious actor cloning the repository",
+        "Use history and blame to recover previous secret values",
+        "Attempt API calls with the leaked credential"
+      ]
+    },
+    {
+      title: "Evidence Gathering",
+      items: [
+        "Record console output and timestamps",
+        "Capture git commit hashes containing the secret",
+        "List all services that accepted the compromised credential"
+      ]
+    }
+  ];
+
+  const detectionQuestions = [
+    "Where would this leak appear in your logging and monitoring stack?",
+    "Which teams or individuals were alerted, and how quickly?",
+    "What automated controls prevented the secret from being pushed?",
+    "Does your incident response plan include revoking this credential type?"
+  ];
+
+  const mitigationPlaybook = {
+    immediate: [
+      "Invalidate the exposed credential and rotate dependent services",
+      "Purge build artifacts, caches, and logs containing the secret",
+      "Notify owners of downstream systems using the credential"
+    ],
+    shortTerm: [
+      "Audit the repository history using truffleHog or gitleaks",
+      "Add automated scanning to CI and pre-push hooks",
+      "Educate developers on the incident that just occurred"
+    ],
+    longTerm: [
+      "Introduce a secrets manager and remove hardcoded credentials",
+      "Enforce branch protection rules with secret detection",
+      "Schedule quarterly reviews of repositories with sensitive access"
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
       <main className="container mx-auto px-4 py-8 max-w-6xl">
@@ -206,6 +258,73 @@ const token = jwt.sign({ userId: 123 }, SECRET, { expiresIn: '1h' });`,
                   💡 These breaches could have been prevented by following proper secrets management practices.
                 </p>
               </div>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Divider className="my-12" />
+
+        <div className="grid gap-6 md:grid-cols-2 mb-12">
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Hands-on Lab</h3>
+            </CardHeader>
+            <CardBody className="space-y-4">
+              {labSteps.map((step) => (
+                <div key={step.title}>
+                  <p className="font-medium text-foreground-600 mb-2">{step.title}</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
+                    {step.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <h3 className="text-xl font-semibold">Detection & Reporting Prompts</h3>
+            </CardHeader>
+            <CardBody>
+              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
+                {detectionQuestions.map((question) => (
+                  <li key={question}>{question}</li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <h3 className="text-xl font-semibold">Mitigation Playbook</h3>
+          </CardHeader>
+          <CardBody className="grid gap-6 md:grid-cols-3">
+            <div>
+              <p className="font-semibold text-danger mb-2">Immediate</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-600">
+                {mitigationPlaybook.immediate.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-warning mb-2">Short Term</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-600">
+                {mitigationPlaybook.shortTerm.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold text-success mb-2">Long Term</p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-600">
+                {mitigationPlaybook.longTerm.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
           </CardBody>
         </Card>
