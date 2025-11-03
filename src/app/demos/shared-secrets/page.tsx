@@ -44,9 +44,9 @@ export default function SharedSecretsDemo() {
     "port": 5432
   },
   "apiKeys": {
-    "stripe": "sk_live_1234567890abcdef",
+    "stripe": "fake-stripe-live-key-example",
     "sendgrid": "SG.1234567890abcdef",
-    "aws": "AKIAI1234567890ABCDEF"
+    "aws": "fake-aws-key-for-demo-only"
   },
   "jwt": {
     "secret": "my-super-secret-jwt-key-for-production"
