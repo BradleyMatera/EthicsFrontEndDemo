@@ -1,0 +1,25 @@
+{
+  "api_key": "sk-shared-config-demo-1234567890",
+  "database": {
+    "host": "shared.database.company.com",
+    "username": "shared_app_user", 
+    "password": "shared_secure_password_456",
+    "port": 5432,
+    "ssl": true
+  },
+  "jwt_secret": "shared-jwt-secret-key-for-demo",
+  "external_apis": {
+    "payment_gateway": "pk_shared_stripe_key_demo",
+    "analytics": "shared_google_analytics_token",
+    "email_service": "shared_sendgrid_api_key"
+  },
+  "feature_flags": {
+    "enable_new_dashboard": true,
+    "enable_beta_features": false,
+    "maintenance_mode": false
+  },
+  "cache_settings": {
+    "redis_url": "redis://shared-cache.company.com:6379",
+    "ttl_seconds": 3600
+  }
+}

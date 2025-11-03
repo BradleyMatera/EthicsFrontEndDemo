@@ -1,13 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/EthicsFrontEndDemo' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/EthicsFrontEndDemo/' : '',
-  images: {
-    unoptimized: true,
-  },
-  trailingSlash: true,
-  distDir: 'out',
-}
+import type { NextConfig } from "next";
 
-export default nextConfig
+const nextConfig: NextConfig = {
+  // Standard Next.js configuration
+  // Path aliases are handled by tsconfig.json
+};
+
+export default nextConfig;

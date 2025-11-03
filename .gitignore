@@ -2,28 +2,54 @@
 node_modules/
 .pnp
 .pnp.js
+.yarn/install-state.gz
 
-# Production builds
-/out/
-/dist/
-/.next/
-.next
+# Testing
+/coverage
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Production
+.vercel/
 
 # Environment variables
 .env
-.env.local
+.env*.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Logs
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+
+# Local
+.DS_Store
+*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets (Educational examples - never commit real secrets!)
+/secrets/
+*.pem
+*.key
+config/secrets.*
+
+# Logs
+logs/
+*.log
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
@@ -35,28 +61,49 @@ coverage/
 # nyc test coverage
 .nyc_output
 
-# IDEs and editors
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Dependency directories
+node_modules/
+jspm_packages/
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Optional npm cache directory
+.npm
 
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
+# Optional eslint cache
+.eslintcache
 
-# Vercel
-.vercel
+# Optional REPL history
+.node_repl_history
 
-# Secrets (educational demo purposes)
-/secrets/secrets.json
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
