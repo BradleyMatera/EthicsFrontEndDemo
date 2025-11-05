@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = "force-static";
+export const revalidate = 0;
+
 // BAD PRACTICE: Hardcoded secrets directly in code
 // This is for EDUCATIONAL PURPOSES ONLY - NEVER do this in real applications!
 const HARDCODED_API_KEY = "DEMO_STRIPE_API_KEY_DO_NOT_USE"; // Educational example only

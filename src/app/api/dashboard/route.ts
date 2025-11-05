@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const dynamic = "force-static";
+export const revalidate = 0;
 import * as fs from 'fs';
 import * as path from 'path';
 

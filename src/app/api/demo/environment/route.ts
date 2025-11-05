@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = "force-static";
+export const revalidate = 0;
+
 // GOOD PRACTICE: Using environment variables
 // This demonstrates the proper way to handle secrets
 

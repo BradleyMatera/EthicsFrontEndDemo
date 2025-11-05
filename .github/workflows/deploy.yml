@@ -45,6 +45,8 @@ jobs:
     - name: Build with Next.js
       run: bun run build
       env:
+        NEXT_STATIC_EXPORT: "true"
+        NEXT_PUBLIC_BASE_PATH: /EthicsFrontEndDemo
         NEXT_PUBLIC_BASE_URL: https://bradleymatera.github.io/EthicsFrontEndDemo
 
     - name: Upload artifact
