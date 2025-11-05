@@ -466,9 +466,22 @@ module.exports = {
             </div>
           </CardHeader>
           <CardBody>
-            <p className="text-foreground-600 mb-4">
-              Click the button above to see how shared configuration files work and their benefits/risks:
-            </p>
+            <div className="space-y-3 mb-6 text-sm text-foreground-600">
+              <p>
+                Pressing the button reenacts what happens when a team synchronises secrets through a shared JSON file.
+                Behind the scenes the simulation:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Loads a configuration file that still contains production credentials</li>
+                <li>Illustrates how that file spreads to CI, laptops, and contractors the moment it is committed</li>
+                <li>Highlights the lingering risk even after the file is “removed” from the repository</li>
+              </ul>
+              <p>
+                Treat the output as a narrated post-incident review. Each log line explains who touched the secrets,
+                where copies travelled, and what control failures allowed the leak to happen. The summary banner
+                captures the recommended next steps.
+              </p>
+            </div>
             
             {demoOutput && (
               <div className="mt-4">

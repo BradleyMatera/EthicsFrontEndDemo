@@ -540,9 +540,22 @@ DEBUG=false`
             </div>
           </CardHeader>
           <CardBody>
-            <p className="text-foreground-600 mb-4">
-              Click the button above to see how environment variables provide secure secrets management:
-            </p>
+            <div className="space-y-3 mb-6 text-sm text-foreground-600">
+              <p>
+                This simulation acts out a production deployment where configuration is injected at runtime.
+                When you press the button we load a miniature service that:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Reads environment input instead of pulling secrets from source code</li>
+                <li>Performs a “sanity check” to stop the process if required keys are missing</li>
+                <li>Reports a recommendation explaining why this pattern keeps credentials safe</li>
+              </ul>
+              <p>
+                Use the output to connect each console line to the lifecycle you just learned: configuration is
+                provided at launch, verified immediately, and never committed to git. The result banner at the end
+                summarizes the security posture the script achieved.
+              </p>
+            </div>
             
             {demoOutput && (
               <div className="mt-4">

@@ -379,9 +379,20 @@ const token = jwt.sign({ userId: 123 }, SECRET, { expiresIn: '1h' });`,
             </div>
           </CardHeader>
           <CardBody>
-            <p className="text-foreground-600 mb-4">
-              Click the button above to see how hardcoded secrets work in practice and what security risks they pose:
-            </p>
+            <div className="space-y-3 mb-6 text-sm text-foreground-600">
+              <p>
+                This demo walks through a realistic “secrets committed to git” incident. When the simulation runs it:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Loads a mock service that has an API key embedded directly in the source</li>
+                <li>Shows how quickly an automated scan or attacker can spot and extract the credential</li>
+                <li>Explains the blast radius and remediation steps a team would need to take afterwards</li>
+              </ul>
+              <p>
+                Read the console logs as a timeline: discovery, exploit, and aftermath. The result panel frames the
+                security status in plain language so you can retell the story to teammates and stakeholders.
+              </p>
+            </div>
             
             {demoOutput && (
               <div className="mt-4">
