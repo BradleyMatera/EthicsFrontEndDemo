@@ -9,8 +9,9 @@
     "lint": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --ext .ts,.tsx --fix src",
     "type-check": "tsc --noEmit",
-  "build:pages": "NEXT_STATIC_EXPORT=true NEXT_PUBLIC_BASE_PATH=/EthicsFrontEndDemo next build",
-  "export": "bun run build:pages",
+    "build:pages": "NEXT_STATIC_EXPORT=true NEXT_PUBLIC_BASE_PATH=/EthicsFrontEndDemo NEXT_PUBLIC_BASE_URL=https://bradleymatera.github.io/EthicsFrontEndDemo next build",
+    "export": "bun run build:pages",
+    "build:github-pages": "bun run build:pages",
     "deploy:vercel": "vercel --prod",
     "deploy:netlify": "netlify deploy --prod"
   },
