@@ -15,6 +15,7 @@ import { useTheme } from 'next-themes';
 import { Sun, Moon, Shield } from 'lucide-react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import NextLink from 'next/link';
 
 const menuItems = [
   { name: 'Home', href: '/' },
@@ -51,7 +52,11 @@ export function Navigation() {
       <NavbarContent className="hidden sm:flex" justify="center">
         {menuItems.map((item) => (
           <NavbarItem key={item.name} isActive={pathname === item.href}>
-            <Link color={pathname === item.href ? 'primary' : 'foreground'} href={item.href}>
+            <Link
+              as={NextLink}
+              color={pathname === item.href ? 'primary' : 'foreground'}
+              href={item.href}
+            >
               {item.name}
             </Link>
           </NavbarItem>
@@ -73,6 +78,7 @@ export function Navigation() {
         {menuItems.map((item) => (
           <NavbarMenuItem key={item.name} isActive={pathname === item.href}>
             <Link
+              as={NextLink}
               className="w-full"
               color={pathname === item.href ? 'primary' : 'foreground'}
               href={item.href}
