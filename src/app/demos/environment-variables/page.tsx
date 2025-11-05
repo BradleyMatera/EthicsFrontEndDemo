@@ -3,6 +3,8 @@
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CodeBlock } from "@/components/ui/code-block";
 import { EnvironmentVariablesDemo as EnvDemo } from "@/demos/environment/demo";
+import { LabConsole } from "@/components/labs/LabConsole";
+import { environmentVariablesScenario } from "@/components/labs/scenarios";
 import { 
   Card, 
   CardBody, 
@@ -387,6 +389,8 @@ DEBUG=false`
         </div>
 
         <Divider className="my-12" />
+
+  <LabConsole scenario={environmentVariablesScenario} />
 
         <div className="grid gap-6 md:grid-cols-2 mb-12">
           <Card>

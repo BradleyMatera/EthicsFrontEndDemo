@@ -3,6 +3,8 @@
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CodeBlock } from "@/components/ui/code-block";
 import { SharedSecretsDemo as SharedDemo } from "@/demos/shared/demo";
+import { LabConsole } from "@/components/labs/LabConsole";
+import { sharedSecretsScenario } from "@/components/labs/scenarios";
 import { 
   Card, 
   CardBody, 
@@ -327,6 +329,8 @@ module.exports = {
         </div>
 
         <Divider className="my-12" />
+
+  <LabConsole scenario={sharedSecretsScenario} />
 
         <div className="grid gap-6 md:grid-cols-2 mb-12">
           <Card>

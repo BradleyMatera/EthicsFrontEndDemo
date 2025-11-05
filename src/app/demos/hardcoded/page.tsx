@@ -3,6 +3,8 @@
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CodeBlock } from "@/components/ui/code-block";
 import { HardcodedSecretsDemo as HardcodedDemo } from "@/demos/hardcoded/demo";
+import { LabConsole } from "@/components/labs/LabConsole";
+import { hardcodedSecretsScenario } from "@/components/labs/scenarios";
 import { 
   Card, 
   CardBody, 
@@ -263,6 +265,8 @@ const token = jwt.sign({ userId: 123 }, SECRET, { expiresIn: '1h' });`,
         </Card>
 
         <Divider className="my-12" />
+
+  <LabConsole scenario={hardcodedSecretsScenario} />
 
         <div className="grid gap-6 md:grid-cols-2 mb-12">
           <Card>
