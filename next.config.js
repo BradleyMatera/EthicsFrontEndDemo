@@ -1,5 +1,3 @@
-import type { NextConfig } from "next";
-
 const isStaticExport = process.env.NEXT_STATIC_EXPORT === "true";
 const requestedBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const normalizedBasePath =
@@ -9,7 +7,8 @@ const normalizedBasePath =
     ? `/${requestedBasePath}`
     : "";
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   ...(isStaticExport
     ? {
         output: "export",
@@ -24,4 +23,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 };
 
-export default nextConfig;
+module.exports = nextConfig;
