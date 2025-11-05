@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { Card, CardBody, CardHeader, Chip, Link } from '@nextui-org/react';
 import { CheckCircle2, Circle, Flag, TrendingUp } from 'lucide-react';
+import NextLink from 'next/link';
 
 type TutorialStep = {
   title: string;
@@ -80,7 +81,12 @@ export function TutorialProgress() {
               className="rounded-lg border border-default-200 bg-content1/60 p-3 transition hover:border-primary/50 hover:shadow-sm"
             >
               <div className="flex items-center justify-between gap-2">
-                <Link href={step.href} color="foreground" className="text-sm font-medium hover:text-primary">
+                <Link
+                  as={NextLink}
+                  href={step.href}
+                  color="foreground"
+                  className="text-sm font-medium hover:text-primary"
+                >
                   {step.title}
                 </Link>
                 {statusChip[status]}
