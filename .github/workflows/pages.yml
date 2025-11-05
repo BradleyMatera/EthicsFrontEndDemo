@@ -25,16 +25,22 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.11.1'
+          check-latest: true
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
       - name: Build static site for GitHub Pages
-        run: bun run build:pages
+        run: bun run build:github-pages
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: out
 
   deploy:
     needs: build
