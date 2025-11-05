@@ -14,6 +14,14 @@ export const hardcodedSecretsScenario: LabScenario = {
     'Move all secret material into environment variables with validation.',
     'Update the onboarding docs so the next engineer knows what to configure.',
   ],
+  walkthroughSteps: [
+    'Start with `ls` to see the available files, then `cat src/services/payments.ts` to locate the hardcoded key.',
+    'Run `edit src/services/payments.ts` and remove the inline constant, replacing it with `process.env.STRIPE_SECRET_KEY` plus a guard that throws if it is missing.',
+    'After saving, use `status` to confirm the first two tasks acknowledge the change. If not, re-open the file and double-check the guard wording.',
+    'Open the environment template with `edit .env.example`, add a descriptive placeholder for `STRIPE_SECRET_KEY`, and ensure no real keys remain.',
+    'Use `cat docs/incident-log.md` to review the checklist and confirm you have covered each action item.',
+    'Finish by running `validate` so the console reports success and reminds you to rotate the real Stripe key in production.'
+  ],
   files: [
     {
       path: 'src/services/payments.ts',
@@ -146,6 +154,14 @@ export const sharedSecretsScenario: LabScenario = {
     'Update the app configuration to stop reading secrets directly from git.',
     'Scrub the template so future commits never include real credentials.',
   ],
+  walkthroughSteps: [
+    'List files and review the leak with `cat config/secrets.json` to see exactly what shipped to git.',
+    'Use `edit config/secrets.json` to swap live credentials for placeholders that clearly signal “replace me”. Save and check `status` to see the first task complete.',
+    'Open `src/config.ts` in the editor, remove the JSON import, and read the required values from `process.env`, throwing an error if any are missing.',
+    'Preview the refactor with `cat src/config.ts` to ensure the import is gone and each environment variable is named correctly.',
+    'Document the rollout by editing `docs/runbook.md`, adding bullet points for STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, and DATABASE_URL plus guidance on requesting access.',
+    'Run `validate` to confirm every checklist item passes before you exit the lab.'
+  ],
   files: [
     {
       path: 'config/secrets.json',
@@ -266,6 +282,14 @@ export const environmentVariablesScenario: LabScenario = {
     'Open bootstrap.ts to see how the service initialises configuration.',
     'Add safeguards so missing variables fail the build with clear messaging.',
     'Keep the template file and onboarding checklist in sync.',
+  ],
+  walkthroughSteps: [
+    'Begin with `cat src/bootstrap.ts` to understand how configuration is currently constructed.',
+    'Open the file in the editor and add validation that checks DATABASE_URL, STRIPE_SECRET_KEY, and SESSION_SECRET before bootstrapping. Throw one clear error if any are missing.',
+    'After saving, use `status` to ensure the validation task is marked complete. If not, confirm each variable name matches the expectation exactly.',
+    'Edit `.env.template` so every required variable has a placeholder value or guidance instead of a blank comment.',
+    'Update `docs/onboarding.md` with explicit steps for copying the template, filling secrets, and running a verification script such as `bun run verify-env`.',
+    'Finally, run `validate` to record success and capture the board’s confirmation message.'
   ],
   files: [
     {

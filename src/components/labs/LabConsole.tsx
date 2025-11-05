@@ -16,7 +16,7 @@ import {
   ModalFooter,
   Tooltip,
 } from '@nextui-org/react';
-import { CheckCircle2, Command, Info, ListChecks, ListTodo, RefreshCw, Terminal } from 'lucide-react';
+import { CheckCircle2, Command, Info, ListChecks, ListTodo, Terminal } from 'lucide-react';
 import { LabScenario } from './types';
 
 const COMMANDS = [
@@ -364,6 +364,17 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
                 <li key={step}>{step}</li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {scenario.walkthroughSteps && scenario.walkthroughSteps.length > 0 && (
+          <div className="rounded-lg border border-default-200 bg-content1/40 p-4 text-sm text-foreground-600">
+            <p className="mb-2 font-semibold flex items-center gap-2"><ListTodo size={16} /> Step-by-step Walkthrough</p>
+            <ol className="list-decimal space-y-1 pl-5">
+              {scenario.walkthroughSteps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
           </div>
         )}
 

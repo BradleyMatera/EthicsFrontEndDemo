@@ -1,396 +1,402 @@
 'use client';
 
-import { Navigation } from "@/components/Navigation";
-import { TutorialProgress } from "@/components/TutorialProgress";
-import { 
-  Card, 
-  CardBody, 
-  CardHeader, 
-  Button, 
-  Chip,
-  Divider,
-  Tabs,
-  Tab,
-} from "@nextui-org/react";
-import { 
-  Shield, 
-  AlertTriangle, 
-  CheckCircle, 
-  BookOpen, 
+import { Card, CardBody, CardHeader, Chip, Divider } from "@nextui-org/react";
+import {
+  AlertTriangle,
   ArrowRight,
-  Eye,
+  BookOpen,
+  CheckCircle,
+  Cloud,
+  DoorOpen,
+  Key,
   Lock,
-  Key
+  Network,
+  Shield,
+  Terminal,
+  Users,
+  Workflow,
+  Zap
 } from "lucide-react";
 import Link from "next/link";
 
+const secretExamples = [
+  {
+    title: "API keys",
+    description: "Unique identifiers that unlock payment providers, maps, or email services."
+  },
+  {
+    title: "Database credentials",
+    description: "Usernames and passwords that let applications read or write production data."
+  },
+  {
+    title: "Encryption keys",
+    description: "Digital keys that scramble or unscramble customer information."
+  },
+  {
+    title: "Tokens & certificates",
+    description: "Short strings that prove an app or person really is who they claim to be."
+  }
+];
+
+const leakConsequences = [
+  {
+    headline: "Public Git history",
+    detail: "A secret committed once is visible forever—even if you delete the file later."
+  },
+  {
+    headline: "Unexpected invoices",
+    detail: "Attackers run up costs by using your API keys for their own traffic."
+  },
+  {
+    headline: "Data exposure",
+    detail: "Database credentials give intruders a direct tunnel to private customer data."
+  }
+];
+
+const nodeInsights = [
+  {
+    label: "JavaScript without the browser",
+    explanation: "Node.js lets us run JavaScript on servers, handling tasks users never see."
+  },
+  {
+    label: "Secret-handling mindset",
+    explanation: "Server logic reads credentials, talks to payment gateways, and stores records securely."
+  },
+  {
+    label: "Frontend vs. backend",
+    explanation: "Frontend code is the lobby everyone walks through. Node.js is the locked vault behind it."
+  }
+];
+
+const envHighlights = [
+  {
+    label: "Config that travels",
+    description: "Environment variables change per machine or environment without touching source code."
+  },
+  {
+    label: "Temporary by design",
+    description: "They live in memory while your app runs, then disappear—no traces in git history."
+  },
+  {
+    label: ".env files as training wheels",
+    description: "Local files mimic production settings so you can test safely on your laptop."
+  }
+];
+
+const localPractices = [
+  {
+    stage: ".env.local",
+    focus: "Your personal sandbox",
+    notes: "Only values you need on your machine. Never share or commit."
+  },
+  {
+    stage: ".env.test",
+    focus: "Repeatable experiments",
+    notes: "Automated tests with fake credentials. Safe to reset anytime."
+  },
+  {
+    stage: ".env.production",
+    focus: "Launch-ready",
+    notes: "Real secrets that stay off laptops and live inside secured systems."
+  }
+];
+
+const pipelineConcepts = [
+  {
+    title: "Secret vault per pipeline",
+    description: "CI tools store encrypted values so builds can run without showing them to developers."
+  },
+  {
+    title: "Courier analogy",
+    description: "Pipelines behave like trusted couriers—picking up sealed envelopes and delivering them only at runtime."
+  },
+  {
+    title: "Role-based access",
+    description: "Only a few people can edit production secrets. Everyone else gets least-privilege access."
+  }
+];
+
+const cloudManagers = [
+  {
+    name: "AWS Secrets Manager",
+    strength: "Automated rotation and fine-grained permissions",
+    icon: <Cloud size={18} className="text-primary" />
+  },
+  {
+    name: "Azure Key Vault",
+    strength: "Hardware-backed encryption with auditing",
+    icon: <Shield size={18} className="text-secondary" />
+  },
+  {
+    name: "Google Secret Manager",
+    strength: "Versioned secrets with IAM control",
+    icon: <Workflow size={18} className="text-success" />
+  },
+  {
+    name: "HashiCorp Vault",
+    strength: "Platform-agnostic control plane for dynamic credentials",
+    icon: <Lock size={18} className="text-warning" />
+  }
+];
+
+const commonPitfalls = [
+  {
+    mistake: "Hardcoding API keys",
+    fix: "Keep secrets outside code and inject them when the app starts."
+  },
+  {
+    mistake: "Sharing one secret everywhere",
+    fix: "Give each environment and service its own credential. No shared master keys."
+  },
+  {
+    mistake: "Logging secrets for debugging",
+    fix: "Mask sensitive values before they reach console output or monitoring tools."
+  },
+  {
+    mistake: "Pushing .env files to git",
+    fix: "Use .gitignore and provide safe templates like .env.example instead."
+  },
+  {
+    mistake: "Ignoring rotation",
+    fix: "Schedule secret refreshes and track the last time each value changed."
+  }
+];
+
+const circleTakeaways = [
+  "Secrets are the keys to your customers' trust.",
+  "Node.js runs the processes that need those keys on the server side.",
+  "Environment variables keep keys close at hand without embedding them in code.",
+  "CI/CD pipelines deliver keys safely during builds.",
+  "Cloud secret stores manage keys at scale with encryption, auditing, and rotation.",
+  "Teams succeed when every environment follows the same promise: never expose secrets, only deliver them where needed." 
+];
+
 export default function Home() {
-  const demoCards = [
-    {
-      title: "Hardcoded Secrets",
-      description: "Learn why hardcoding secrets directly in your code is dangerous",
-      icon: <Eye className="text-danger" size={24} />,
-      risk: "High Risk",
-      riskColor: "danger" as const,
-      href: "/demos/hardcoded",
-      examples: ["API keys in source", "Database passwords", "JWT secrets"],
-    },
-    {
-      title: "Shared Secrets",
-      description: "Explore the risks of committing secrets files to your repository",
-      icon: <Lock className="text-warning" size={24} />,
-      risk: "Medium Risk",
-      riskColor: "warning" as const,
-      href: "/demos/shared-secrets",
-      examples: ["secrets.json files", "Config files with passwords", "Shared keys"],
-    },
-    {
-      title: "Environment Variables",
-      description: "Discover the proper way to handle secrets using .env files",
-      icon: <Key className="text-success" size={24} />,
-      risk: "Best Practice",
-      riskColor: "success" as const,
-      href: "/demos/environment-variables",
-      examples: [".env files", "Runtime secrets", "Secure deployment"],
-    },
-    {
-      title: "Comparison",
-      description: "Compare all approaches side-by-side to understand the differences",
-      icon: <Shield className="text-primary" size={24} />,
-      risk: "Educational",
-      riskColor: "primary" as const,
-      href: "/comparison",
-      examples: ["Security analysis", "Feature comparison", "Migration guide"],
-    },
-  ];
-
-  const learningModules = [
-    {
-      key: "foundations",
-      title: "Module 1 · Foundations",
-      subtitle: "Set expectations and baseline awareness across the team",
-      objectives: [
-        "Install Bun, clone the repository, and run the project locally",
-        "Align on terminology: secrets, credentials, keys, tokens",
-        "Capture the current state of secrets usage in your apps"
-      ],
-      deliverables: [
-        "Local environment checklist signed off",
-        "Baseline screenshot of insecure secret exposure",
-        "Stakeholder map showing who touches secrets today"
-      ]
-    },
-    {
-      key: "exposure",
-      title: "Module 2 · Exposure Drills",
-      subtitle: "Experience the failure modes firsthand",
-      objectives: [
-        "Run each insecure demo and capture console output",
-        "Document the attack path and timeline for every breach scenario",
-        "List monitoring or logging gaps that made detection harder"
-      ],
-      deliverables: [
-        "Incident-style write-up for hardcoded secrets",
-        "Incident-style write-up for shared secrets",
-        "Rotation plan for any real credentials uncovered"
-      ]
-    },
-    {
-      key: "hardening",
-      title: "Module 3 · Hardening",
-      subtitle: "Replace insecure patterns with the .env workflow",
-      objectives: [
-        "Create environment-specific .env files with validation",
-        "Integrate CI and deployment secrets for production parity",
-        "Automate local setup with scripts or task runners"
-      ],
-      deliverables: [
-        "Validated .env.example file checked into version control",
-        "Automation scripts for loading secrets locally and in CI",
-        "Documented rotation cadence for each credential"
-      ]
-    },
-    {
-      key: "operations",
-      title: "Module 4 · Operations",
-      subtitle: "Make secure secrets management a habit",
-      objectives: [
-        "Define ownership, escalation paths, and review cadence",
-        "Configure monitoring, alerting, and dashboards for secrets",
-        "Create onboarding/offboarding flows for privileged access"
-      ],
-      deliverables: [
-        "Secrets governance charter",
-        "Alert runbook for suspected compromise",
-        "Quarterly audit checklist ready for compliance"
-      ]
-    }
-  ];
-
-  const adoptionChecklist = [
-    "Select a secrets manager or platform secrets store",
-    "Catalogue every credential used across environments",
-    "Automate rotation and expiry alerts",
-    "Document recovery procedures for compromised credentials",
-    "Train teams on onboarding, usage, and revocation workflows"
-  ];
-
-  const practitionerToolkit = [
-    {
-      name: "Discovery",
-      items: [
-        "truffleHog / gitleaks git history scans",
-        "CI secret scanning hooks",
-        "Dependency inventory with secret usage annotations"
-      ]
-    },
-    {
-      name: "Implementation",
-      items: [
-        "dotenv-safe validation script",
-        "Pre-commit hooks preventing accidental secret commits",
-        "CLI helpers for local environment injection"
-      ]
-    },
-    {
-      name: "Operations",
-      items: [
-        "Rotation scheduler and reminder system",
-        "Access review templates (quarterly/annual)",
-        "Incident response playbooks for leaked credentials"
-      ]
-    }
-  ];
-
   return (
-    <div className="min-h-screen">
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Hero Section */}
-        <div className="text-center py-12">
-          <div className="flex justify-center mb-6">
-            <Shield className="text-primary mr-3" size={48} />
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Node.js Secrets
-            </h1>
+    <div className="min-h-screen bg-gradient-to-b from-background to-default-50">
+      <main className="container mx-auto px-4 py-10 max-w-6xl space-y-16">
+        <header className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Shield className="text-primary" size={40} />
+            <div>
+              <p className="text-sm uppercase tracking-wide text-foreground-400">EthicsFrontEndDemo</p>
+              <h1 className="text-4xl md:text-5xl font-bold">Secrets & Environment Variables in Node.js</h1>
+            </div>
           </div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground-600 mb-4">
-            Management Tutorial
-          </h2>
-          <p className="text-lg text-foreground-500 max-w-3xl mx-auto mb-8">
-            A comprehensive, interactive guide to managing secrets in Node.js applications. 
-            Learn from bad practices to industry best practices with hands-on examples.
+          <p className="text-lg text-foreground-500 max-w-3xl mx-auto">
+            Walk through a story that connects everyday developer tasks to responsible secret handling. No code, just clear concepts, visual metaphors, and a full-circle understanding of why this discipline matters.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              as={Link}
-              href="/demos/hardcoded" 
-              color="primary" 
-              size="lg"
-              endContent={<ArrowRight size={20} />}
-            >
-              Start Learning
-            </Button>
-            <Button 
-              as={Link}
-              href="/best-practices" 
-              variant="bordered" 
-              size="lg"
-              startContent={<BookOpen size={20} />}
-            >
-              Best Practices
-            </Button>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-foreground-500">
+            <Chip variant="flat" color="primary" startContent={<BookOpen size={14} />}>Learn the concepts</Chip>
+            <Chip variant="flat" color="success" startContent={<CheckCircle size={14} />}>Build ethical reflexes</Chip>
+            <Chip variant="flat" color="secondary" startContent={<ArrowRight size={14} />}>Move from laptop → cloud</Chip>
           </div>
-        </div>
+        </header>
 
-        <Divider className="my-12" />
-
-        {/* What You'll Learn Section */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card>
-            <CardHeader>
-              <AlertTriangle className="text-warning mr-3" size={24} />
-              <h3 className="text-xl font-semibold">What NOT to Do</h3>
-            </CardHeader>
-            <CardBody>
-              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                <li>Hardcoding secrets in source code</li>
-                <li>Committing secrets to version control</li>
-                <li>Sharing secrets in plain text files</li>
-                <li>Using the same secrets across environments</li>
-              </ul>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CheckCircle className="text-success mr-3" size={24} />
-              <h3 className="text-xl font-semibold">Best Practices</h3>
-            </CardHeader>
-            <CardBody>
-              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                <li>Environment-based secret management</li>
-                <li>Proper .gitignore configurations</li>
-                <li>Secret rotation and expiration</li>
-                <li>Production-grade secret managers</li>
-              </ul>
-            </CardBody>
-          </Card>
-        </div>
-
-        {/* Interactive Demos */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Interactive Demonstrations</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {demoCards.map((demo) => (
-              <Card key={demo.href} className="hover:scale-105 transition-transform">
-                <CardHeader>
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center">
-                      {demo.icon}
-                      <div className="ml-3">
-                        <h4 className="text-lg font-semibold">{demo.title}</h4>
-                        <Chip size="sm" color={demo.riskColor} variant="flat">
-                          {demo.risk}
-                        </Chip>
-                      </div>
-                    </div>
-                  </div>
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Key size={24} className="text-primary" /> Introduction · What counts as a secret?</h2>
+          <p className="text-foreground-600">
+            A secret is anything that would cause harm if it landed in the wrong hands. Think of them as the keys to the vault: small pieces of information that unlock huge capabilities.
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {secretExamples.map((example) => (
+              <Card key={example.title}>
+                <CardHeader className="text-lg font-semibold flex items-center gap-2">
+                  <Key size={18} className="text-secondary" /> {example.title}
                 </CardHeader>
-                <CardBody>
-                  <p className="text-foreground-600 mb-4">{demo.description}</p>
-                  <div className="mb-4">
-                    <p className="text-sm font-medium mb-2">Examples:</p>
-                    <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
-                      {demo.examples.map((example) => (
-                        <li key={example}>{example}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Button 
-                    as={Link}
-                    href={demo.href}
-                    color={demo.riskColor}
-                    variant="flat"
-                    size="sm"
-                    endContent={<ArrowRight size={16} />}
-                    className="w-full"
-                  >
-                    Explore Demo
-                  </Button>
-                </CardBody>
+                <CardBody className="text-sm text-foreground-600">{example.description}</CardBody>
               </Card>
             ))}
           </div>
-        </div>
-
-        <Divider className="my-12" />
-
-        {/* Guided Curriculum */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-4">Guided Curriculum</h2>
-          <p className="text-foreground-600 text-center max-w-3xl mx-auto mb-8">
-            Follow the curriculum to move from awareness to production-grade governance. Each module spells out objectives,
-            exit criteria, and artefacts you should produce along the way.
-          </p>
-          <Tabs aria-label="Learning modules" color="primary" variant="underlined" className="max-w-5xl mx-auto">
-            {learningModules.map((module) => (
-              <Tab key={module.key} title={module.title} className="text-left">
-                <Card>
-                  <CardHeader className="flex flex-col items-start gap-2">
-                    <p className="text-sm uppercase tracking-wide text-foreground-400">{module.subtitle}</p>
-                    <h3 className="text-xl font-semibold">Learning Objectives</h3>
-                  </CardHeader>
-                  <CardBody className="space-y-6">
-                    <div>
-                      <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                        {module.objectives.map((objective) => (
-                          <li key={objective}>{objective}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground-500 mb-2">Exit Criteria</p>
-                      <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                        {module.deliverables.map((deliverable) => (
-                          <li key={deliverable}>{deliverable}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Tab>
-            ))}
-          </Tabs>
-        </section>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-2 bg-warning-50 border-warning-200">
-            <CardBody>
-              <div className="flex items-start">
-                <AlertTriangle className="text-warning mr-3 mt-1" size={20} />
-                <div>
-                  <p className="font-semibold text-warning-800">Educational Purpose Only</p>
-                  <p className="text-warning-700 text-sm">
-                    This tutorial demonstrates both secure and insecure practices so you can recognize poor patterns in the wild.
-                    Never ship the insecure examples — use them to educate your team and improve existing systems.
-                  </p>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-
-          <TutorialProgress />
-        </div>
-
-        <Divider className="my-12" />
-
-        {/* Adoption Checklist & Toolkit */}
-        <section className="grid gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <div>
-                <h3 className="text-xl font-semibold">Adoption Checklist</h3>
-                <p className="text-sm text-foreground-500">Mark these milestones as you roll the programme out.</p>
-              </div>
-            </CardHeader>
-            <CardBody>
-              <ol className="list-decimal space-y-2 pl-5 text-foreground-600">
-                {adoptionChecklist.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ol>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div>
-                <h3 className="text-xl font-semibold">Practitioner Toolkit</h3>
-                <p className="text-sm text-foreground-500">Keep these tools handy for discovery, implementation, and operations.</p>
-              </div>
-            </CardHeader>
-            <CardBody className="space-y-4">
-              {practitionerToolkit.map((group) => (
-                <div key={group.name}>
-                  <p className="font-medium text-foreground-600 mb-2">{group.name}</p>
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
-                    {group.items.map((tool) => (
-                      <li key={tool}>{tool}</li>
-                    ))}
-                  </ul>
+          <Card className="bg-danger-50 border border-danger-200">
+            <CardHeader className="font-semibold text-danger flex items-center gap-2"><Zap size={18} /> When secrets leak</CardHeader>
+            <CardBody className="grid gap-3 md:grid-cols-3 text-sm text-danger-700">
+              {leakConsequences.map((item) => (
+                <div key={item.headline} className="space-y-1">
+                  <p className="font-medium">{item.headline}</p>
+                  <p>{item.detail}</p>
                 </div>
               ))}
             </CardBody>
           </Card>
+          <p className="text-foreground-600">
+            This site is your guided tour. We will move from “what” to “how” to “who owns it” so that you finish with a story you can retell to teammates, stakeholders, and future you.
+          </p>
         </section>
 
-        {/* Footer */}
-        <div className="text-center mt-12 pt-8 border-t border-divider">
-          <p className="text-foreground-500">
-            Built with Next.js, NextUI, and ❤️ for secure coding practices
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><DoorOpen size={24} className="text-secondary" /> Understanding Node.js · The vault behind the door</h2>
+          <p className="text-foreground-600">
+            Node.js is the backstage crew of many modern web systems. It runs on the server, quietly handling passwords, talking to third-party services, and keeping records safe while the browser shows a friendly face to the world.
           </p>
-        </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {nodeInsights.map((insight) => (
+              <Card key={insight.label}>
+                <CardHeader className="font-semibold text-base flex items-center gap-2"><DoorOpen size={16} className="text-primary" /> {insight.label}</CardHeader>
+                <CardBody className="text-sm text-foreground-600">{insight.explanation}</CardBody>
+              </Card>
+            ))}
+          </div>
+          <Card className="border-default-200 bg-content1/50">
+            <CardBody className="text-sm text-foreground-600 space-y-2">
+              <p className="font-semibold text-foreground-700">Visual metaphor:</p>
+              <p className="font-mono text-xs md:text-sm bg-default-100 rounded-md p-3">
+                [Browser Door] → welcomes every visitor<br />
+                [Node.js Vault] → checks ID, unlocks drawers, records transactions<br />
+                Secrets belong in the vault. Never tape them to the door.
+              </p>
+            </CardBody>
+          </Card>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Network size={24} className="text-success" /> Environment Variables · Config that adapts</h2>
+          <p className="text-foreground-600">
+            Environment variables are little notes handed to your application right before it wakes up. They change per location—your laptop, staging servers, production clusters—so the same code can behave differently without edits.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {envHighlights.map((item) => (
+              <Card key={item.label}>
+                <CardHeader className="font-semibold text-base flex items-center gap-2"><Terminal size={16} className="text-success" /> {item.label}</CardHeader>
+                <CardBody className="text-sm text-foreground-600">{item.description}</CardBody>
+              </Card>
+            ))}
+          </div>
+          <Card className="bg-primary-50 border border-primary-200">
+            <CardBody className="text-sm text-primary-800 space-y-2">
+              <p className="font-semibold">Why it matters:</p>
+              <p>Keeping secrets out of code means you can rotate them quickly, limit who sees them, and avoid accidental leaks when sharing repositories.</p>
+            </CardBody>
+          </Card>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Terminal size={24} className="text-warning" /> Local Development · Security on your laptop</h2>
+          <p className="text-foreground-600">
+            Developers need working credentials to build features, but local files should never contain long-lived production secrets. Think of each environment file as its own labeled key ring.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {localPractices.map((practice) => (
+              <Card key={practice.stage}>
+                <CardHeader className="font-semibold text-base flex items-center gap-2"><Key size={16} className="text-warning" /> {practice.stage}</CardHeader>
+                <CardBody className="text-sm text-foreground-600 space-y-1">
+                  <p className="font-medium text-foreground-700">{practice.focus}</p>
+                  <p>{practice.notes}</p>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+          <Card className="border-default-200">
+            <CardBody className="space-y-3 text-sm text-foreground-600">
+              <p><strong>Never commit:</strong> Add real .env files to <span className="font-mono">.gitignore</span> so they stay on your machine only.</p>
+              <p><strong>Document safely:</strong> Ship a <span className="font-mono">.env.example</span> with placeholder values so teammates know what to fill in without seeing the actual secrets.</p>
+              <p><strong>Rotate & review:</strong> Set calendar reminders to check whether local secrets still need access or can be revoked.</p>
+            </CardBody>
+          </Card>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Workflow size={24} className="text-primary" /> Secrets in CI/CD · Pipelines as couriers</h2>
+          <p className="text-foreground-600">
+            Once code is ready, automated pipelines build, test, and deploy it. They need secrets to access registries, clouds, or payment providers—but those secrets must stay hidden from logs and screenshots.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {pipelineConcepts.map((concept) => (
+              <Card key={concept.title}>
+                <CardHeader className="font-semibold text-base flex items-center gap-2"><Workflow size={16} className="text-primary" /> {concept.title}</CardHeader>
+                <CardBody className="text-sm text-foreground-600">{concept.description}</CardBody>
+              </Card>
+            ))}
+          </div>
+          <Card className="bg-content1/60 border-default-200">
+            <CardBody className="text-sm text-foreground-600 space-y-2">
+              <p className="font-semibold text-foreground-700">Mental model:</p>
+              <p className="font-mono text-xs md:text-sm bg-default-100 rounded-md p-3">
+                Developer writes code → pipeline picks it up → pipeline retrieves secrets securely → pipeline deploys app<br />
+                At no point do secrets appear in git history, pull requests, or screenshots.
+              </p>
+            </CardBody>
+          </Card>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Cloud size={24} className="text-secondary" /> Cloud Secret Stores · Managing at scale</h2>
+          <p className="text-foreground-600">
+            As systems grow, flat files cannot keep up. Cloud secret managers provide encryption, rotation, auditing, and access policies so you can prove compliance and sleep at night.
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {cloudManagers.map((manager) => (
+              <Card key={manager.name}>
+                <CardHeader className="font-semibold text-base flex items-center gap-2">{manager.icon} {manager.name}</CardHeader>
+                <CardBody className="text-sm text-foreground-600">{manager.strength}</CardBody>
+              </Card>
+            ))}
+          </div>
+          <Card className="border-default-200 bg-success-50">
+            <CardBody className="text-sm text-success-800 space-y-2">
+              <p className="font-semibold">Why upgrade?</p>
+              <p>Cloud stores act like monitored vaults: every access is logged, leases can expire automatically, and policies ensure only the right services see the right values.</p>
+            </CardBody>
+          </Card>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><AlertTriangle size={24} className="text-danger" /> Common mistakes & better habits</h2>
+          <p className="text-foreground-600">Security slips happen when pressure is high. Recognize the traps, then practice the healthier reflex.</p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {commonPitfalls.map((item) => (
+              <Card key={item.mistake}>
+                <CardHeader className="text-base font-semibold flex items-center gap-2 text-danger"><Lock size={16} /> {item.mistake}</CardHeader>
+                <CardBody className="text-sm text-foreground-600">
+                  <p className="font-medium text-foreground-700">Try instead:</p>
+                  <p>{item.fix}</p>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Divider />
+
+        <section className="space-y-6">
+          <h2 className="text-3xl font-semibold flex items-center gap-2"><Users size={24} className="text-primary" /> The full circle</h2>
+          <p className="text-foreground-600">
+            You now have the complete map—from the moment a secret is created to the day it is rotated out. Share it with your team, reference it during audits, and keep refining the process.
+          </p>
+          <Card className="border-default-200">
+            <CardBody className="space-y-3 text-sm text-foreground-600">
+              {circleTakeaways.map((line) => (
+                <p key={line} className="flex items-start gap-2"><CheckCircle size={16} className="text-success mt-0.5" /> {line}</p>
+              ))}
+            </CardBody>
+          </Card>
+          <Card className="bg-primary-50 border border-primary-200">
+            <CardBody className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-primary-800">
+              <div className="space-y-1">
+                <p className="font-semibold">Keep exploring:</p>
+                <p>Ready to apply what you learned? Dive into the interactive labs to practice identifying and fixing risky patterns.</p>
+              </div>
+              <Link href="/demos" className="inline-flex items-center gap-2 font-medium text-primary">
+                Visit the labs <ArrowRight size={16} />
+              </Link>
+            </CardBody>
+          </Card>
+          <p className="text-center text-sm text-foreground-500">
+            Secret management is an everyday practice, not a one-off project. Stay curious, keep policies living, and support teammates who are learning.
+          </p>
+        </section>
       </main>
     </div>
   );

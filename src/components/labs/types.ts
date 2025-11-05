@@ -19,6 +19,7 @@ export type LabScenario = {
   title: string;
   description: string;
   introSteps?: string[];
+  walkthroughSteps?: string[];
   files: LabFile[];
   tasks: LabTask[];
   success: {
