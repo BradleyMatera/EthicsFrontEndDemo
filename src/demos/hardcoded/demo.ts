@@ -1,10 +1,20 @@
+/**
+ * WARNING: This file demonstrates insecure patterns.
+ * Hardcoded secrets are unsafe and should never be used in production.
+ * See environment variable demo for best practices.
+ */
 // BAD EXAMPLE - Hardcoded secrets (DO NOT USE IN PRODUCTION)
 // This represents the dangerous approach shown in hardcoded-demo repository
 
+import { hardcodedSecretsScenario } from "@/components/labs/scenarios";
+
 class HardcodedSecretsDemo {
   // DANGER: API key directly in source code
+  // WARNING: This is a fake key for demonstration only.
   private readonly API_KEY = "sk-1234567890abcdef";
+  // WARNING: Hardcoded password (unsafe)
   private readonly DB_PASSWORD = "hardcoded123";
+  // WARNING: Hardcoded JWT secret (unsafe)
   private readonly JWT_SECRET = "my-super-secret-jwt-key";
 
   // DANGER: Database connection with hardcoded credentials
@@ -83,12 +93,27 @@ class HardcodedSecretsDemo {
     
     console.log("\n⚠️  SECURITY RISKS:");
     this.getSecurityRisks().forEach(risk => console.log(`- ${risk}`));
-    
+
+    // Combine with lab scenario metadata
     return {
       demo_type: "hardcoded",
       status: "completed",
       security_level: "CRITICAL_RISK",
-      recommendation: "NEVER use this approach in production!"
+      recommendation: "NEVER use this approach in production!",
+      lab: {
+        id: hardcodedSecretsScenario.id,
+        title: hardcodedSecretsScenario.title,
+        description: hardcodedSecretsScenario.description,
+        introSteps: hardcodedSecretsScenario.introSteps,
+        walkthroughSteps: hardcodedSecretsScenario.walkthroughSteps,
+        tasks: hardcodedSecretsScenario.tasks.map(t => ({
+          id: t.id,
+          title: t.title,
+          description: t.description,
+          hint: t.hint
+        })),
+        resources: hardcodedSecretsScenario.resources
+      }
     };
   }
 }

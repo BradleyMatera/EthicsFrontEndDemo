@@ -3,8 +3,6 @@
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CodeBlock } from "@/components/ui/code-block";
 import { SharedSecretsDemo as SharedDemo } from "@/demos/shared/demo";
-import { LabConsole } from "@/components/labs/LabConsole";
-import { sharedSecretsScenario } from "@/components/labs/scenarios";
 import { 
   Card, 
   CardBody, 
@@ -330,40 +328,179 @@ module.exports = {
 
         <Divider className="my-12" />
 
-  <LabConsole scenario={sharedSecretsScenario} />
+        {/* CLI Demo (Terminal) */}
+        <Card className="mb-8">
+          <CardHeader>
+            <Terminal className="mr-3" size={24} />
+            <h2 className="text-xl font-semibold">CLI Demo (Terminal)</h2>
+          </CardHeader>
+          <CardBody>
+            <p className="text-foreground-600 mb-4">
+              Run the shared secrets demo from your terminal in this project root:
+            </p>
+            <CodeBlock
+              title="Run CLI demo"
+              language="bash"
+              code={`# From project root
+node app-shared.js
 
-        <div className="grid gap-6 md:grid-cols-2 mb-12">
-          <Card>
-            <CardHeader>
-              <h3 className="text-xl font-semibold">Guided Lab Exercises</h3>
-            </CardHeader>
-            <CardBody className="space-y-4">
-              {labExercises.map((exercise) => (
-                <div key={exercise.title}>
-                  <p className="font-medium text-foreground-600 mb-2">{exercise.title}</p>
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
-                    {exercise.steps.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </CardBody>
-          </Card>
+# Or with Bun
+bun app-shared.js`}
+            />
+          </CardBody>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <h3 className="text-xl font-semibold">Governance Questions</h3>
-            </CardHeader>
-            <CardBody>
-              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                {governanceQuestions.map((question) => (
-                  <li key={question}>{question}</li>
-                ))}
-              </ul>
-            </CardBody>
-          </Card>
-        </div>
+        {/* Unified Interactive Demo & Lab */}
+        <Card className="mb-8">
+          <CardHeader>
+            <Terminal className="mr-3" size={24} />
+            <div className="flex items-center justify-between w-full">
+              <h2 className="text-xl font-semibold">Interactive Demo & Guided Lab</h2>
+              <Button
+                color="warning"
+                variant="flat"
+                startContent={<Play size={16} />}
+                onPress={async () => {
+                  setIsRunning(true);
+                  setDemoOutput(null);
+
+                  try {
+                    const originalLog = console.log;
+                    const logs: string[] = [];
+                    console.log = (...args) => {
+                      logs.push(args.join(' '));
+                      originalLog(...args);
+                    };
+
+                    const result = await demo.runDemo();
+                    console.log = originalLog;
+
+                    setDemoOutput({
+                      result,
+                      logs,
+                      timestamp: new Date().toLocaleTimeString()
+                    });
+                  } catch (error) {
+                    setDemoOutput({
+                      error: error instanceof Error ? error.message : 'Unknown error',
+                      timestamp: new Date().toLocaleTimeString()
+                    });
+                  }
+
+                  setIsRunning(false);
+                }}
+                isLoading={isRunning}
+              >
+                {isRunning ? 'Running...' : 'Run Demo & Lab'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <div className="space-y-3 mb-6 text-sm text-foreground-600">
+              <p>
+                This unified demo reenacts a shared secrets leak and walks through the guided lab steps. The output includes console logs, demo results, and lab scenario tasks and resources.
+              </p>
+            </div>
+
+            {demoOutput && (
+              <div className="mt-4">
+                <Card className="bg-default-100">
+                  <CardHeader className="pb-2">
+                    <Terminal size={16} className="mr-2" />
+                    <span className="text-sm font-mono">Demo Output ({demoOutput.timestamp})</span>
+                  </CardHeader>
+                  <CardBody className="pt-2">
+                    {demoOutput.error ? (
+                      <div className="text-danger">
+                        <p className="font-semibold">Error:</p>
+                        <p className="font-mono text-sm">{demoOutput.error}</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {demoOutput.logs && demoOutput.logs.length > 0 && (
+                          <div>
+                            <p className="font-semibold mb-2">Console Output:</p>
+                            <div className="bg-black text-green-400 p-3 rounded font-mono text-sm overflow-x-auto">
+                              {demoOutput.logs.map((log: string, index: number) => (
+                                <div key={index}>{log}</div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {demoOutput.result && (
+                          <div>
+                            <p className="font-semibold mb-2">Demo Result:</p>
+                            <div className="bg-warning-50 border border-warning-200 p-3 rounded">
+                              <div className="space-y-2">
+                                <p><strong>Demo Type:</strong> {demoOutput.result.demo_type}</p>
+                                <p><strong>Status:</strong> {demoOutput.result.status}</p>
+                                <div className="flex items-center gap-2"><strong>Security Level:</strong><Chip color="warning" size="sm">{demoOutput.result.security_level}</Chip></div>
+                                <p><strong>Recommendation:</strong> {demoOutput.result.recommendation}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Lab Scenario Details */}
+                        {demoOutput.result && demoOutput.result.lab && (
+                          <div className="mt-6">
+                            <Card className="bg-default-50 border-default-200">
+                              <CardHeader>
+                                <h3 className="text-lg font-semibold">Lab: {demoOutput.result.lab.title}</h3>
+                              </CardHeader>
+                              <CardBody>
+                                <p className="mb-2">{demoOutput.result.lab.description}</p>
+                                <div className="mb-4">
+                                  <strong>Intro Steps:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.introSteps.map((step: string, idx: number) => (
+                                      <li key={idx}>{step}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Walkthrough Steps:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.walkthroughSteps.map((step: string, idx: number) => (
+                                      <li key={idx}>{step}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Tasks:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.tasks.map((task: any, idx: number) => (
+                                      <li key={idx}>
+                                        <strong>{task.title}:</strong> {task.description}
+                                        <br />
+                                        <em>Hint:</em> {task.hint}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Resources:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.resources.map((res: any, idx: number) => (
+                                      <li key={idx}>
+                                        <a href={res.href} target="_blank" rel="noopener noreferrer">{res.label}</a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </CardBody>
+                            </Card>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </CardBody>
+                </Card>
+              </div>
+            )}
+          </CardBody>
+        </Card>
 
         <Card className="mb-12">
           <CardHeader>
@@ -420,116 +557,6 @@ module.exports = {
           </CardBody>
         </Card>
 
-        {/* Interactive Demo */}
-        <Card className="mb-8">
-          <CardHeader>
-            <Terminal className="mr-3" size={24} />
-            <div className="flex items-center justify-between w-full">
-              <h2 className="text-xl font-semibold">Run Interactive Demo</h2>
-              <Button
-                color="warning"
-                variant="flat"
-                startContent={<Play size={16} />}
-                onPress={async () => {
-                  setIsRunning(true);
-                  setDemoOutput(null);
-                  
-                  try {
-                    const originalLog = console.log;
-                    const logs: string[] = [];
-                    console.log = (...args) => {
-                      logs.push(args.join(' '));
-                      originalLog(...args);
-                    };
-
-                    const result = await demo.runDemo();
-                    console.log = originalLog;
-                    
-                    setDemoOutput({
-                      result,
-                      logs,
-                      timestamp: new Date().toLocaleTimeString()
-                    });
-                  } catch (error) {
-                    setDemoOutput({
-                      error: error instanceof Error ? error.message : 'Unknown error',
-                      timestamp: new Date().toLocaleTimeString()
-                    });
-                  }
-                  
-                  setIsRunning(false);
-                }}
-                isLoading={isRunning}
-              >
-                {isRunning ? 'Running...' : 'Execute Shared Config Demo'}
-              </Button>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="space-y-3 mb-6 text-sm text-foreground-600">
-              <p>
-                Pressing the button reenacts what happens when a team synchronises secrets through a shared JSON file.
-                Behind the scenes the simulation:
-              </p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Loads a configuration file that still contains production credentials</li>
-                <li>Illustrates how that file spreads to CI, laptops, and contractors the moment it is committed</li>
-                <li>Highlights the lingering risk even after the file is “removed” from the repository</li>
-              </ul>
-              <p>
-                Treat the output as a narrated post-incident review. Each log line explains who touched the secrets,
-                where copies travelled, and what control failures allowed the leak to happen. The summary banner
-                captures the recommended next steps.
-              </p>
-            </div>
-            
-            {demoOutput && (
-              <div className="mt-4">
-                <Card className="bg-default-100">
-                  <CardHeader className="pb-2">
-                    <Terminal size={16} className="mr-2" />
-                    <span className="text-sm font-mono">Demo Output ({demoOutput.timestamp})</span>
-                  </CardHeader>
-                  <CardBody className="pt-2">
-                    {demoOutput.error ? (
-                      <div className="text-danger">
-                        <p className="font-semibold">Error:</p>
-                        <p className="font-mono text-sm">{demoOutput.error}</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {demoOutput.logs && demoOutput.logs.length > 0 && (
-                          <div>
-                            <p className="font-semibold mb-2">Console Output:</p>
-                            <div className="bg-black text-green-400 p-3 rounded font-mono text-sm overflow-x-auto">
-                              {demoOutput.logs.map((log: string, index: number) => (
-                                <div key={index}>{log}</div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {demoOutput.result && (
-                          <div>
-                            <p className="font-semibold mb-2">Demo Result:</p>
-                            <div className="bg-warning-50 border border-warning-200 p-3 rounded">
-                              <div className="space-y-2">
-                                <p><strong>Demo Type:</strong> {demoOutput.result.demo_type}</p>
-                                <p><strong>Status:</strong> {demoOutput.result.status}</p>
-                                <p><strong>Security Level:</strong> <Chip color="warning" size="sm">{demoOutput.result.security_level}</Chip></p>
-                                <p><strong>Recommendation:</strong> {demoOutput.result.recommendation}</p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </CardBody>
-                </Card>
-              </div>
-            )}
-          </CardBody>
-        </Card>
 
         {/* Demo Repositories */}
         <Card className="mb-12">

@@ -1,5 +1,12 @@
+/**
+ * WARNING: This file demonstrates the shared secrets file approach.
+ * Committing secrets files is risky and should be avoided in production.
+ * Prefer environment variables or secret managers for sensitive data.
+ */
 // SHARED FILES APPROACH - Better than hardcoded but still has issues
 // This represents the approach shown in shared-demo repository
+
+import { sharedSecretsScenario } from "@/components/labs/scenarios";
 
 class SharedSecretsDemo {
   private config: any = null;
@@ -15,20 +22,21 @@ class SharedSecretsDemo {
     
     try {
       // Use demo configuration (simulating what would be loaded from a config file)
+      // WARNING: These are fake secrets for demonstration only.
       this.config = {
-        api_key: "sk-shared-config-demo-1234567890",
+        api_key: "REPLACE_ME_API_KEY",
         database: {
-          host: "shared.database.company.com",
-          username: "shared_app_user", 
-          password: "shared_secure_password_456",
+          host: "REPLACE_ME_DB_HOST",
+          username: "REPLACE_ME_DB_USER", 
+          password: "REPLACE_ME_DB_PASSWORD",
           port: 5432,
           ssl: true
         },
-        jwt_secret: "shared-jwt-secret-key-for-demo",
+        jwt_secret: "REPLACE_ME_JWT_SECRET",
         external_apis: {
-          payment_gateway: "pk_shared_stripe_key_demo",
-          analytics: "shared_google_analytics_token",
-          email_service: "shared_sendgrid_api_key"
+          payment_gateway: "REPLACE_ME_PAYMENT_GATEWAY_KEY",
+          analytics: "REPLACE_ME_ANALYTICS_TOKEN",
+          email_service: "REPLACE_ME_EMAIL_SERVICE_KEY"
         },
         feature_flags: {
           enable_new_dashboard: true,
@@ -36,7 +44,7 @@ class SharedSecretsDemo {
           maintenance_mode: false
         },
         cache_settings: {
-          redis_url: "redis://shared-cache.company.com:6379",
+          redis_url: "REPLACE_ME_REDIS_URL",
           ttl_seconds: 3600
         }
       };
@@ -157,6 +165,7 @@ class SharedSecretsDemo {
 
   // Simulate the shared file approach demo
   async runDemo() {
+    // Run the original demo logic
     console.log("📁 SHARED FILES DEMO (IMPROVED APPROACH)");
     console.log("=" .repeat(50));
     
@@ -174,12 +183,27 @@ class SharedSecretsDemo {
     console.log("Pros:", analysis.pros);
     console.log("Cons:", analysis.cons);
     console.log("Best Practices:", analysis.best_practices);
-    
+
+    // Combine with lab scenario metadata
     return {
       demo_type: "shared_files",
       status: "completed", 
       security_level: "MODERATE_RISK",
-      recommendation: "Good improvement, but environment variables are better"
+      recommendation: "Good improvement, but environment variables are better",
+      lab: {
+        id: sharedSecretsScenario.id,
+        title: sharedSecretsScenario.title,
+        description: sharedSecretsScenario.description,
+        introSteps: sharedSecretsScenario.introSteps,
+        walkthroughSteps: sharedSecretsScenario.walkthroughSteps,
+        tasks: sharedSecretsScenario.tasks.map(t => ({
+          id: t.id,
+          title: t.title,
+          description: t.description,
+          hint: t.hint
+        })),
+        resources: sharedSecretsScenario.resources
+      }
     };
   }
 }

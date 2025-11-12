@@ -184,11 +184,11 @@ export default function Home() {
             </div>
           </div>
           <p className="text-lg text-foreground-500 max-w-3xl mx-auto">
-            Walk through a story that connects everyday developer tasks to responsible secret handling. No code, just clear concepts, visual metaphors, and a full-circle understanding of why this discipline matters.
+            Welcome to my Node.js Secrets Management Tutorial – an interactive demo I built (with a lot of help from AI tools) to explore how to handle secrets securely. This project is a learning prototype that walks through what not to do and what to do when managing API keys, credentials, and other secrets in Node.js applications.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-foreground-500">
             <Chip variant="flat" color="primary" startContent={<BookOpen size={14} />}>Learn the concepts</Chip>
-            <Chip variant="flat" color="success" startContent={<CheckCircle size={14} />}>Build ethical reflexes</Chip>
+            <Chip variant="flat" color="success" startContent={<CheckCircle size={14} />}>Build security awareness</Chip>
             <Chip variant="flat" color="secondary" startContent={<ArrowRight size={14} />}>Move from laptop → cloud</Chip>
           </div>
         </header>

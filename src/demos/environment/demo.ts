@@ -1,5 +1,12 @@
+/**
+ * BEST PRACTICE: This file demonstrates secure secrets management using environment variables.
+ * Secrets should never be committed to source code or config files.
+ * Always validate required environment variables and handle missing values securely.
+ */
 // ENVIRONMENT VARIABLES APPROACH - Best Practice Implementation
 // This represents the approach shown in env-demo repository
+
+import { environmentVariablesScenario } from "@/components/labs/scenarios";
 
 class EnvironmentVariablesDemo {
   // Get environment variables with fallbacks
@@ -227,12 +234,27 @@ class EnvironmentVariablesDemo {
     console.log("Development:", bestPractices.development);
     console.log("Production:", bestPractices.production);
     console.log("Security:", bestPractices.security);
-    
+
+    // Combine with lab scenario metadata
     return {
       demo_type: "environment_variables",
       status: "completed",
       security_level: "HIGH_SECURITY", 
-      recommendation: "This is the recommended approach for production applications"
+      recommendation: "This is the recommended approach for production applications",
+      lab: {
+        id: environmentVariablesScenario.id,
+        title: environmentVariablesScenario.title,
+        description: environmentVariablesScenario.description,
+        introSteps: environmentVariablesScenario.introSteps,
+        walkthroughSteps: environmentVariablesScenario.walkthroughSteps,
+        tasks: environmentVariablesScenario.tasks.map(t => ({
+          id: t.id,
+          title: t.title,
+          description: t.description,
+          hint: t.hint
+        })),
+        resources: environmentVariablesScenario.resources
+      }
     };
   }
 }

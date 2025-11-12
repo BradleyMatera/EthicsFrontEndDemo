@@ -3,8 +3,6 @@
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { CodeBlock } from "@/components/ui/code-block";
 import { EnvironmentVariablesDemo as EnvDemo } from "@/demos/environment/demo";
-import { LabConsole } from "@/components/labs/LabConsole";
-import { environmentVariablesScenario } from "@/components/labs/scenarios";
 import { 
   Card, 
   CardBody, 
@@ -390,40 +388,179 @@ DEBUG=false`
 
         <Divider className="my-12" />
 
-  <LabConsole scenario={environmentVariablesScenario} />
+{/* CLI Demo (Terminal) */}
+<Card className="mb-8">
+  <CardHeader>
+    <Terminal className="mr-3" size={24} />
+    <h2 className="text-xl font-semibold">CLI Demo (Terminal)</h2>
+  </CardHeader>
+  <CardBody>
+    <p className="text-foreground-600 mb-4">
+      Run the environment variables demo from your terminal in this project root:
+    </p>
+    <CodeBlock
+      title="Run CLI demo"
+      language="bash"
+      code={`# From project root
+node app-env.js
 
-        <div className="grid gap-6 md:grid-cols-2 mb-12">
-          <Card>
-            <CardHeader>
-              <h3 className="text-xl font-semibold">Lab Scenarios</h3>
-            </CardHeader>
-            <CardBody className="space-y-4">
-              {labScenarios.map((scenario) => (
-                <div key={scenario.title}>
-                  <p className="font-medium text-foreground-600 mb-2">{scenario.title}</p>
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-foreground-500">
-                    {scenario.steps.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </CardBody>
-          </Card>
+# Or with Bun
+bun app-env.js`}
+    />
+  </CardBody>
+</Card>
 
-          <Card>
-            <CardHeader>
-              <h3 className="text-xl font-semibold">Observability Checklist</h3>
-            </CardHeader>
-            <CardBody>
-              <ul className="list-disc space-y-2 pl-5 text-foreground-600">
-                {observabilityChecklist.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </CardBody>
-          </Card>
-        </div>
+        {/* Unified Interactive Demo & Lab */}
+        <Card className="mb-8">
+          <CardHeader>
+            <Terminal className="mr-3" size={24} />
+            <div className="flex items-center justify-between w-full">
+              <h2 className="text-xl font-semibold">Interactive Demo & Guided Lab</h2>
+              <Button
+                color="success"
+                variant="flat"
+                startContent={<Play size={16} />}
+                onPress={async () => {
+                  setIsRunning(true);
+                  setDemoOutput(null);
+
+                  try {
+                    const originalLog = console.log;
+                    const logs: string[] = [];
+                    console.log = (...args) => {
+                      logs.push(args.join(' '));
+                      originalLog(...args);
+                    };
+
+                    const result = await demo.runDemo();
+                    console.log = originalLog;
+
+                    setDemoOutput({
+                      result,
+                      logs,
+                      timestamp: new Date().toLocaleTimeString()
+                    });
+                  } catch (error) {
+                    setDemoOutput({
+                      error: error instanceof Error ? error.message : 'Unknown error',
+                      timestamp: new Date().toLocaleTimeString()
+                    });
+                  }
+
+                  setIsRunning(false);
+                }}
+                isLoading={isRunning}
+              >
+                {isRunning ? 'Running...' : 'Run Demo & Lab'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <div className="space-y-3 mb-6 text-sm text-foreground-600">
+              <p>
+                This unified demo simulates secure environment variable management and walks through the guided lab steps. The output includes console logs, demo results, and lab scenario tasks and resources.
+              </p>
+            </div>
+
+            {demoOutput && (
+              <div className="mt-4">
+                <Card className="bg-default-100">
+                  <CardHeader className="pb-2">
+                    <Terminal size={16} className="mr-2" />
+                    <span className="text-sm font-mono">Demo Output ({demoOutput.timestamp})</span>
+                  </CardHeader>
+                  <CardBody className="pt-2">
+                    {demoOutput.error ? (
+                      <div className="text-danger">
+                        <p className="font-semibold">Error:</p>
+                        <p className="font-mono text-sm">{demoOutput.error}</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {demoOutput.logs && demoOutput.logs.length > 0 && (
+                          <div>
+                            <p className="font-semibold mb-2">Console Output:</p>
+                            <div className="bg-black text-green-400 p-3 rounded font-mono text-sm overflow-x-auto">
+                              {demoOutput.logs.map((log: string, index: number) => (
+                                <div key={index}>{log}</div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {demoOutput.result && (
+                          <div>
+                            <p className="font-semibold mb-2">Demo Result:</p>
+                            <div className="bg-success-50 border border-success-200 p-3 rounded">
+                              <div className="space-y-2">
+                                <p><strong>Demo Type:</strong> {demoOutput.result.demo_type}</p>
+                                <p><strong>Status:</strong> {demoOutput.result.status}</p>
+                                <div className="flex items-center gap-2"><strong>Security Level:</strong><Chip color="success" size="sm">{demoOutput.result.security_level}</Chip></div>
+                                <p><strong>Recommendation:</strong> {demoOutput.result.recommendation}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Lab Scenario Details */}
+                        {demoOutput.result && demoOutput.result.lab && (
+                          <div className="mt-6">
+                            <Card className="bg-default-50 border-default-200">
+                              <CardHeader>
+                                <h3 className="text-lg font-semibold">Lab: {demoOutput.result.lab.title}</h3>
+                              </CardHeader>
+                              <CardBody>
+                                <p className="mb-2">{demoOutput.result.lab.description}</p>
+                                <div className="mb-4">
+                                  <strong>Intro Steps:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.introSteps.map((step: string, idx: number) => (
+                                      <li key={idx}>{step}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Walkthrough Steps:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.walkthroughSteps.map((step: string, idx: number) => (
+                                      <li key={idx}>{step}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Tasks:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.tasks.map((task: any, idx: number) => (
+                                      <li key={idx}>
+                                        <strong>{task.title}:</strong> {task.description}
+                                        <br />
+                                        <em>Hint:</em> {task.hint}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="mb-4">
+                                  <strong>Resources:</strong>
+                                  <ul className="list-disc pl-5">
+                                    {demoOutput.result.lab.resources.map((res: any, idx: number) => (
+                                      <li key={idx}>
+                                        <a href={res.href} target="_blank" rel="noopener noreferrer">{res.label}</a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </CardBody>
+                            </Card>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </CardBody>
+                </Card>
+              </div>
+            )}
+          </CardBody>
+        </Card>
 
         <Card className="mb-12">
           <CardHeader>
@@ -494,116 +631,6 @@ DEBUG=false`
           </CardBody>
         </Card>
 
-        {/* Interactive Demo */}
-        <Card className="mb-8">
-          <CardHeader>
-            <Terminal className="mr-3" size={24} />
-            <div className="flex items-center justify-between w-full">
-              <h2 className="text-xl font-semibold">Run Interactive Demo</h2>
-              <Button
-                color="success"
-                variant="flat"
-                startContent={<Play size={16} />}
-                onPress={async () => {
-                  setIsRunning(true);
-                  setDemoOutput(null);
-                  
-                  try {
-                    const originalLog = console.log;
-                    const logs: string[] = [];
-                    console.log = (...args) => {
-                      logs.push(args.join(' '));
-                      originalLog(...args);
-                    };
-
-                    const result = await demo.runDemo();
-                    console.log = originalLog;
-                    
-                    setDemoOutput({
-                      result,
-                      logs,
-                      timestamp: new Date().toLocaleTimeString()
-                    });
-                  } catch (error) {
-                    setDemoOutput({
-                      error: error instanceof Error ? error.message : 'Unknown error',
-                      timestamp: new Date().toLocaleTimeString()
-                    });
-                  }
-                  
-                  setIsRunning(false);
-                }}
-                isLoading={isRunning}
-              >
-                {isRunning ? 'Running...' : 'Execute Environment Variables Demo'}
-              </Button>
-            </div>
-          </CardHeader>
-          <CardBody>
-            <div className="space-y-3 mb-6 text-sm text-foreground-600">
-              <p>
-                This simulation acts out a production deployment where configuration is injected at runtime.
-                When you press the button we load a miniature service that:
-              </p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Reads environment input instead of pulling secrets from source code</li>
-                <li>Performs a “sanity check” to stop the process if required keys are missing</li>
-                <li>Reports a recommendation explaining why this pattern keeps credentials safe</li>
-              </ul>
-              <p>
-                Use the output to connect each console line to the lifecycle you just learned: configuration is
-                provided at launch, verified immediately, and never committed to git. The result banner at the end
-                summarizes the security posture the script achieved.
-              </p>
-            </div>
-            
-            {demoOutput && (
-              <div className="mt-4">
-                <Card className="bg-default-100">
-                  <CardHeader className="pb-2">
-                    <Terminal size={16} className="mr-2" />
-                    <span className="text-sm font-mono">Demo Output ({demoOutput.timestamp})</span>
-                  </CardHeader>
-                  <CardBody className="pt-2">
-                    {demoOutput.error ? (
-                      <div className="text-danger">
-                        <p className="font-semibold">Error:</p>
-                        <p className="font-mono text-sm">{demoOutput.error}</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {demoOutput.logs && demoOutput.logs.length > 0 && (
-                          <div>
-                            <p className="font-semibold mb-2">Console Output:</p>
-                            <div className="bg-black text-green-400 p-3 rounded font-mono text-sm overflow-x-auto">
-                              {demoOutput.logs.map((log: string, index: number) => (
-                                <div key={index}>{log}</div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {demoOutput.result && (
-                          <div>
-                            <p className="font-semibold mb-2">Demo Result:</p>
-                            <div className="bg-success-50 border border-success-200 p-3 rounded">
-                              <div className="space-y-2">
-                                <p><strong>Demo Type:</strong> {demoOutput.result.demo_type}</p>
-                                <p><strong>Status:</strong> {demoOutput.result.status}</p>
-                                <p><strong>Security Level:</strong> <Chip color="success" size="sm">{demoOutput.result.security_level}</Chip></p>
-                                <p><strong>Recommendation:</strong> {demoOutput.result.recommendation}</p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </CardBody>
-                </Card>
-              </div>
-            )}
-          </CardBody>
-        </Card>
 
         {/* Demo Repository */}
         <Card className="mb-12">
