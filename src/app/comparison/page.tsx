@@ -14,7 +14,7 @@ import {
   TableRow,
   TableCell,
   Divider,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { 
   AlertTriangle, 
   ArrowLeft, 
@@ -323,7 +323,7 @@ export default function ComparisonPage() {
           </CardHeader>
           <CardBody>
             <div className="space-y-4">
-              <h4 className="font-semibold">If you're currently using hardcoded secrets:</h4>
+              <h4 className="font-semibold">If you&apos;re currently using hardcoded secrets:</h4>
               <div className="flex flex-col md:flex-row items-center gap-4">
                 <Card className="flex-1 bg-danger-50">
                   <CardBody className="text-center">
@@ -358,7 +358,7 @@ export default function ComparisonPage() {
                 <p className="text-primary-800 font-medium">💡 Pro Tip:</p>
                 <p className="text-primary-700 text-sm mt-1">
                   You can migrate gradually. Start by moving secrets to shared files, 
-                  then transition to environment variables when you're ready to set up proper 
+                  then transition to environment variables when you&apos;re ready to set up proper 
                   secret management infrastructure.
                 </p>
               </div>

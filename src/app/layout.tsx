@@ -16,14 +16,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Node.js Secrets Management Tutorial",
-  description: "A comprehensive guide to managing secrets in Node.js applications - from bad practices to best practices",
-  keywords: ["nodejs", "secrets", "security", "environment variables", "tutorial"],
+  title: "SecureLearn — Secrets Management LMS",
+  description: "Learn secrets management best practices through interactive courses, labs, and assessments.",
+  keywords: ["security", "secrets", "lms", "nodejs", "environment variables", "course"],
   authors: [{ name: "Bradley Matera" }],
   openGraph: {
-    title: "Node.js Secrets Management Tutorial",
-    description: "Learn how to properly manage secrets in Node.js applications",
+    title: "SecureLearn — Secrets Management LMS",
+    description: "Interactive courses on secrets management for developers",
     type: "website",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 

@@ -11,7 +11,7 @@ import {
   Chip,
   Divider,
   Link as NextUILink,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { 
   AlertTriangle, 
   ArrowLeft, 
@@ -538,7 +538,7 @@ bun app-shared.js`}
         <Card className="mb-12">
           <CardHeader>
             <Github className="text-primary mr-3" size={24} />
-            <h2 className="text-xl font-semibold">GitHub's Secret Detection</h2>
+            <h2 className="text-xl font-semibold">GitHub&apos;s Secret Detection</h2>
           </CardHeader>
           <CardBody>
             <p className="text-foreground-600 mb-4">
@@ -551,7 +551,7 @@ bun app-shared.js`}
             </ul>
             <div className="p-4 bg-primary-50 rounded-lg border border-primary-200">
               <p className="text-primary-800 font-medium">
-                💡 Even with these protections, it's better to never commit secrets in the first place!
+                💡 Even with these protections, it&apos;s better to never commit secrets in the first place!
               </p>
             </div>
           </CardBody>

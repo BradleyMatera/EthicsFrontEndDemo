@@ -13,7 +13,7 @@ import {
   Link as NextUILink,
   Tabs,
   Tab
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { 
   CheckCircle, 
   ArrowLeft, 

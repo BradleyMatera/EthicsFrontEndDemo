@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
-import { Card, CardBody, CardHeader, Chip, Link } from '@nextui-org/react';
+import { Card, CardBody, CardHeader, Chip, Link } from '@heroui/react';
 import { CheckCircle2, Circle, Flag, TrendingUp } from 'lucide-react';
 import NextLink from 'next/link';
 

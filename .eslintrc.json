@@ -1,0 +1,5 @@
+{
+  "extends": "next/core-web-vitals",
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": ["node_modules", ".next", "dist", "out"]
+}

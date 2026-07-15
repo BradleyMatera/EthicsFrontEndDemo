@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check, Eye, EyeOff } from 'lucide-react';
-import { useTheme } from 'next-themes';
 
 interface CodeBlockProps {
   code: string;
@@ -26,9 +24,6 @@ export function CodeBlock({
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [isVisible, setIsVisible] = useState(canToggleVisibility ? false : true);
-  const { theme, resolvedTheme } = useTheme();
-  
-  const isDark = theme === 'dark' || resolvedTheme === 'dark';
 
   const copyToClipboard = async () => {
     try {
@@ -45,62 +40,52 @@ export function CodeBlock({
   };
 
   const displayCode = isVisible ? code : code.replace(/[^\s\n\r]/g, '•');
-
-  const showHeader = Boolean(title) || canToggleVisibility || true;
   const headerLabel = title ?? 'Code Example';
 
   return (
-    <Card className={`relative w-full ${className}`}>
-      {showHeader && (
-        <CardHeader className="flex items-center justify-between pb-2 pt-4">
-          <h4 className="text-base font-semibold text-foreground">
-            {headerLabel}
-          </h4>
-          <div className="flex gap-2">
-            {canToggleVisibility && (
-              <Button
-                isIconOnly
-                size="sm"
-                variant="light"
-                onPress={toggleVisibility}
-                aria-label={isVisible ? 'Hide code' : 'Show code'}
-              >
-                {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
-              </Button>
-            )}
-            <Button
-              isIconOnly
-              size="sm"
-              variant="light"
-              onPress={copyToClipboard}
-              aria-label="Copy code"
+    <div className={`relative w-full overflow-hidden rounded-xl border border-slate-200 bg-white ${className}`}>
+      <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-2">
+        <h4 className="text-sm font-semibold text-slate-700">
+          {headerLabel}
+        </h4>
+        <div className="flex gap-2">
+          {canToggleVisibility && (
+            <button
+              onClick={toggleVisibility}
+              aria-label={isVisible ? 'Hide code' : 'Show code'}
+              className="rounded-md p-1.5 text-slate-600 hover:bg-slate-200"
             >
-              {copied ? <Check size={16} className="text-success" /> : <Copy size={16} />}
-            </Button>
-          </div>
-        </CardHeader>
-      )}
-      <CardBody className="p-0 pb-4">
-        <div className="relative">
-          <SyntaxHighlighter
-            language={language}
-            style={isDark ? oneDark : oneLight}
-            showLineNumbers={showLineNumbers}
-            customStyle={{
-              margin: 0,
-              borderRadius: title ? '0 0 8px 8px' : '8px',
-              fontSize: '14px',
-            }}
-          >
-            {displayCode}
-          </SyntaxHighlighter>
-          {!isVisible && canToggleVisibility && (
-            <div className="absolute inset-0 bg-danger/10 flex items-center justify-center">
-              <p className="text-danger font-semibold">🔒 Secret Hidden</p>
-            </div>
+              {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
           )}
+          <button
+            onClick={copyToClipboard}
+            aria-label="Copy code"
+            className="rounded-md p-1.5 text-slate-600 hover:bg-slate-200"
+          >
+            {copied ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+          </button>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+      <div className="relative">
+        <SyntaxHighlighter
+          language={language}
+          style={oneLight}
+          showLineNumbers={showLineNumbers}
+          customStyle={{
+            margin: 0,
+            borderRadius: '0 0 8px 8px',
+            fontSize: '14px',
+          }}
+        >
+          {displayCode}
+        </SyntaxHighlighter>
+        {!isVisible && canToggleVisibility && (
+          <div className="absolute inset-0 flex items-center justify-center bg-rose-50/80">
+            <p className="font-semibold text-rose-700">🔒 Secret Hidden</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
