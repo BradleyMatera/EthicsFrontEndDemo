@@ -13,10 +13,10 @@ const nextConfig = {
     ? {
         output: "export",
         trailingSlash: true,
+        basePath: normalizedBasePath || undefined,
+        assetPrefix: normalizedBasePath || undefined,
       }
     : {}),
-  basePath: normalizedBasePath || undefined,
-  assetPrefix: normalizedBasePath || undefined,
   images: {
     unoptimized: true,
   },
