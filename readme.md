@@ -1,204 +1,148 @@
-# Node.js Secrets Management Tutorial
+# SecureLearn LMS
 
-A comprehensive, interactive guide to managing secrets in Node.js applications. Learn from dangerous practices to industry-proven security best practices with hands-on examples and real-world implementations.
+An interactive Learning Management System for teaching secrets management to developers. Progress through structured courses with lessons, quizzes, hands-on labs, and verifiable certificates.
 
-## 🚀 Features
+## Features
 
-- **Interactive Demonstrations**: Live code examples showing good and bad practices
-- **Comprehensive Coverage**: From hardcoded secrets to enterprise-grade solutions
-- **Modern Tech Stack**: Built with Next.js 16, NextUI, and TypeScript
-- **Best Practices Guide**: Based on HashiCorp's 5 principles of secrets management
-- **Real-world Examples**: Learn from actual security breaches and how to prevent them
+- **Structured Curriculum**: Modules and lessons designed by security engineers
+- **Hands-On Labs**: Interactive terminal-based labs that simulate real security scenarios
+- **Knowledge Checks**: Quizzes after each lesson reinforce learning
+- **Verifiable Certificates**: Earn certificates with unique verification numbers upon course completion
+- **Role-Based Experience**: Student, instructor, and admin personas with differentiated dashboards
+- **Progress Tracking**: Dashboard with enrollment status, completion rates, and activity history
+- **Dark Mode**: Full dark mode support across all pages
 
-## 🎯 What You'll Learn
+## Demo Personas
 
-### 1. **Hardcoded Secrets** (🚨 Never Do This)
-- Why hardcoding secrets is dangerous
-- Real-world security breaches caused by hardcoded credentials
-- How secrets appear in version control history
+Use the **Demo Login** button in the navbar to sign in as:
 
-### 2. **Shared Secrets Files** (⚠️ Risky Approach)
-- Problems with committing secrets.json files
-- GitHub's secret detection capabilities
-- Version control exposure risks
+| Persona | Role | Description |
+|---------|------|-------------|
+| Alex Chen | Student | Junior developer learning secrets management |
+| Sam Rodriguez | Instructor | Security engineer with 10+ years experience |
+| Jordan Blake | Admin | Platform administrator overseeing operations |
 
-### 3. **Environment Variables** (✅ Recommended)
-- Industry-standard approach using .env files
-- Deployment platform configuration
-- Production-grade implementation patterns
+## Tech Stack
 
-### 4. **Enterprise Best Practices** (🎓 Advanced)
-- HashiCorp's 5 pillars of secrets management
-- Dynamic secret generation
-- Centralized control planes and audit trails
-
-## 🛠 Tech Stack
-
-- **Framework**: Next.js 16 with App Router
-- **UI Library**: NextUI components
+- **Framework**: Next.js 15.1.0 with App Router
+- **UI Library**: HeroUI (formerly NextUI)
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
-- **Package Manager**: Bun
-- **Code Highlighting**: React Syntax Highlighter
 - **Icons**: Lucide React
+- **State**: React Context + LocalStorage
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ or Bun
-- Git
+- Node.js 18+ (Node 20 recommended)
+- npm
 
 ### Installation
 
-1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd node-secrets-tutorial
-```
-
-2. Install dependencies:
-```bash
-bun install
-# or
 npm install
 ```
 
-3. Start the development server:
+### Development
+
 ```bash
-bun dev
-# or
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📚 Tutorial Structure
+### Production Build
+
+```bash
+npm run build
+npm run start
+```
+
+## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                 # Homepage with overview
+│   ├── page.tsx                          # LMS landing page
+│   ├── courses/
+│   │   ├── page.tsx                      # Course catalog
+│   │   ├── [slug]/
+│   │   │   ├── page.tsx                  # Course detail with curriculum
+│   │   │   └── lessons/[lessonId]/
+│   │   │       └── page.tsx              # Lesson player with quiz
+│   ├── labs/[lessonId]/
+│   │   └── page.tsx                      # Interactive lab page
+│   ├── dashboard/
+│   │   └── page.tsx                      # Role-based dashboard
+│   ├── certificates/[certNumber]/
+│   │   └── page.tsx                      # Certificate verification
 │   ├── demos/
-│   │   ├── hardcoded/           # Hardcoded secrets demo
-│   │   ├── shared-secrets/      # Shared files demo
-│   │   └── environment-variables/ # Environment vars demo
-│   └── best-practices/          # Comprehensive guide
+│   │   ├── hardcoded/                    # Hardcoded secrets demo
+│   │   ├── shared-secrets/               # Shared files demo
+│   │   └── environment-variables/        # Environment vars demo
+│   ├── comparison/                       # Side-by-side comparison
+│   └── best-practices/                   # HashiCorp 5 pillars guide
 ├── components/
-│   ├── navigation.tsx           # Global navigation bar
-│   ├── footer.tsx               # Persistent footer
-│   ├── Breadcrumb.tsx           # Reusable breadcrumb trail
-│   ├── TutorialProgress.tsx     # Progress tracker widget
-│   ├── providers.tsx            # Theme and UI providers
+│   ├── Navigation.tsx                    # Navbar with theme toggle
+│   ├── Footer.tsx                        # Footer with resource links
+│   ├── PersonaSwitcher.tsx              # Demo login dropdown
+│   ├── providers.tsx                     # HeroUI + Auth providers
+│   ├── Breadcrumb.tsx                    # Reusable breadcrumb
+│   ├── labs/
+│   │   ├── LabConsole.tsx               # Interactive terminal lab
+│   │   ├── scenarios.ts                  # Lab scenarios (hardcoded, env vars)
+│   │   └── types.ts
 │   └── ui/
-│       └── code-block.tsx       # Interactive code component
-├── public/
-│   └── api/                     # Static JSON used for static hosting
+│       └── code-block.tsx               # Syntax-highlighted code
+├── lib/
+│   ├── types.ts                          # Domain types (User, Course, etc.)
+│   ├── auth-context.tsx                  # Auth provider with demo personas
+│   ├── data-store.ts                     # LocalStorage-based state management
+│   └── demo-data.ts                      # Seed courses, users, quiz questions
+└── app/globals.css                       # Global styles + animations
 ```
 
-## 🔗 Demo Repositories
+## Course Content
 
-This tutorial references three separate GitHub repositories that demonstrate each approach:
+### Secrets Management Fundamentals
 
-- **[Hardcoded Demo](https://github.com/BradleyMatera/hardcoded-demo)** - Shows dangerous hardcoded secrets
-- **[Shared Demo](https://github.com/BradleyMatera/shared-demo)** - Demonstrates shared secrets files
-- **[Environment Demo](https://github.com/BradleyMatera/env-demo)** - Proper environment variable usage
+**Module 1: Foundations of Secrets Management**
+- Why Secrets Matter (quiz)
+- The Hardcoded Secrets Problem (quiz + lab)
 
-## 🏗 Build & Deployment
+**Module 2: Environment Variables Done Right**
+- Introduction to Environment Variables (quiz + lab)
+- Validation and Error Handling (quiz)
 
-### Development
-```bash
-bun dev          # Start dev server
-bun build        # Create production build
-bun start        # Start production server
-```
+**Module 3: Advanced Secrets Management**
+- Cloud Secret Stores (quiz)
+- CI/CD and Secrets (quiz)
 
-### Environment Variables
+## Demo Repositories
 
-Create a `.env.local` file for local development:
-```bash
-# Add any environment-specific variables here
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
+- **[Hardcoded Demo](https://github.com/BradleyMatera/hardcoded-demo)**
+- **[Environment Demo](https://github.com/BradleyMatera/env-demo)**
+- **[Shared Secrets Demo](https://github.com/BradleyMatera/shared-demo)**
 
-### Deployment Options
+## Deployment
 
-This application can be deployed to:
-
-- **Vercel**: Zero-config deployment for Next.js
-- **Netlify**: Static site generation support
-- **Docker**: Container-based deployment
-- **Traditional hosting**: Static export support
-
-### GitHub Pages Deployment
-
-GitHub Pages serves static files, so export the site and commit the generated `docs` directory:
+This app can be deployed to Vercel, Netlify, or any Node.js hosting provider.
 
 ```bash
-# Build the static site with the correct base path
-bun run build:pages
-
-# Verify the docs folder locally if needed
-npx serve docs
-
-# Commit the docs folder and push to your GitHub Pages branch or repo
-git add docs
-git commit -m "chore: update GitHub Pages build"
-git push
+npm run build
 ```
 
-The build script sets `NEXT_PUBLIC_BASE_PATH=/EthicsFrontEndDemo` automatically, matching the project page URL `https://bradleymatera.github.io/EthicsFrontEndDemo/`. Adjust the environment variable if you host the files under a different path.
+For static export:
 
-## 🔒 Security Notes
+```bash
+NEXT_STATIC_EXPORT=true npm run build
+```
 
-⚠️ **Important**: This tutorial demonstrates both secure and insecure practices for educational purposes. Never use the "bad" examples shown here in production applications.
+## License
 
-The tutorial teaches:
-- ✅ What TO do for secure secrets management
-- ❌ What NOT to do (with clear warnings)
-- 🎓 Why security practices matter
-- 🛡 How to implement proper solutions
-
-## 📖 Educational Approach
-
-### HashiCorp's 5 Principles
-1. **Central Secrets Control Plane**
-2. **Access Control Lists (ACLs)**
-3. **Dynamic Secrets**
-4. **Encryption as a Service**
-5. **Auditing**
-
-### Implementation Levels
-- **Starter**: Basic .env file approach
-- **Professional**: Cloud provider secrets managers
-- **Enterprise**: HashiCorp Vault and advanced solutions
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [HashiCorp](https://www.hashicorp.com/) for their excellent secrets management principles
-- [OWASP](https://owasp.org/) for security best practices
-- [GitHub](https://github.com/) for secret scanning and security features
-- The open-source community for the amazing tools and libraries
-
-## 📞 Support
-
-If you have questions or need help:
-
-1. Check the [tutorial content](http://localhost:3000) for detailed explanations
-2. Review the [best practices guide](http://localhost:3000/best-practices)
-3. Examine the [demo repositories](https://github.com/BradleyMatera)
-4. Open an issue in this repository
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**⚠️ Educational Purpose Disclaimer**: This tutorial is designed for educational purposes to teach proper secrets management. Always follow your organization's security policies and never expose real credentials in any educational material.
-
-Built with ❤️ for secure coding practices.
+Built with Next.js & HeroUI.

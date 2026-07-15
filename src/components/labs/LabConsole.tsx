@@ -1,22 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Chip,
-  Button,
-  Input,
-  Textarea,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Tooltip,
-} from '@nextui-org/react';
-import { CheckCircle2, Command, Info, ListChecks, ListTodo, Terminal } from 'lucide-react';
+import { CheckCircle2, Command, Info, ListChecks, ListTodo, Terminal, X } from 'lucide-react';
 import { LabScenario } from './types';
 
 const COMMANDS = [
@@ -51,8 +36,6 @@ const cloneFileMap = (files: Record<string, string>) =>
 const makeId = () => Math.random().toString(36).slice(2, 10);
 
 const formatList = (items: string[]) => (items.length === 0 ? '(empty)' : items.join('\n'));
-
-const normalizeWhitespace = (value: string) => value.replace(/\s+/g, ' ').trim();
 
 export function LabConsole({ scenario }: { scenario: LabScenario }) {
   const initialFiles = useMemo(() => {
@@ -341,24 +324,31 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
     setLastValidation('success');
   }, [allTasksComplete, appendEntry, lastValidation]);
 
+  const completedCount = taskStatuses.filter((task) => task.complete).length;
+
   return (
-    <Card className="mb-12 border border-default-200">
-      <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+    <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
+      {/* Header */}
+      <div className="flex flex-col gap-3 border-b border-slate-200 p-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
-          <Terminal className="text-primary" size={22} />
+          <Terminal className="text-blue-600" size={22} />
           <div>
-            <h2 className="text-lg font-semibold">{scenario.title}</h2>
-            <p className="text-xs text-foreground-500">{scenario.description}</p>
+            <h2 className="text-lg font-semibold text-slate-900">{scenario.title}</h2>
+            <p className="text-xs text-slate-500">{scenario.description}</p>
           </div>
         </div>
-        <Chip color={allTasksComplete ? 'success' : 'secondary'} variant="flat" startContent={<ListChecks size={14} />}>
-          {`${taskStatuses.filter((task) => task.complete).length} of ${taskStatuses.length} tasks complete`}
-        </Chip>
-      </CardHeader>
-      <CardBody className="space-y-6">
+        <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+          allTasksComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
+        }`}>
+          <ListChecks size={14} />
+          {completedCount} of {taskStatuses.length} tasks complete
+        </span>
+      </div>
+
+      <div className="space-y-6 p-5">
         {scenario.introSteps && scenario.introSteps.length > 0 && (
-          <div className="rounded-lg border border-default-200 bg-content1/40 p-4 text-sm text-foreground-600">
-            <p className="mb-2 font-semibold flex items-center gap-2"><Info size={16} /> Lab Briefing</p>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            <p className="mb-2 font-semibold flex items-center gap-2"><Info size={16} className="text-blue-600" /> Lab Briefing</p>
             <ul className="list-disc space-y-1 pl-5">
               {scenario.introSteps.map((step) => (
                 <li key={step}>{step}</li>
@@ -368,8 +358,8 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
         )}
 
         {scenario.walkthroughSteps && scenario.walkthroughSteps.length > 0 && (
-          <div className="rounded-lg border border-default-200 bg-content1/40 p-4 text-sm text-foreground-600">
-            <p className="mb-2 font-semibold flex items-center gap-2"><ListTodo size={16} /> Step-by-step Walkthrough</p>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            <p className="mb-2 font-semibold flex items-center gap-2"><ListTodo size={16} className="text-blue-600" /> Step-by-step Walkthrough</p>
             <ol className="list-decimal space-y-1 pl-5">
               {scenario.walkthroughSteps.map((step) => (
                 <li key={step}>{step}</li>
@@ -380,7 +370,7 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-3">
-            <div className="rounded-lg border border-default-200 bg-black text-green-400">
+            <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-900 text-green-400">
               <div
                 ref={terminalScrollRef}
                 className="h-64 overflow-y-auto p-4 text-sm font-mono leading-relaxed"
@@ -389,82 +379,71 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
                   <div
                     key={entry.id}
                     className={entry.tone === 'success'
-                      ? 'text-green-300'
+                      ? 'text-emerald-300'
                       : entry.tone === 'warning'
                       ? 'text-yellow-300'
                       : entry.tone === 'danger'
                       ? 'text-red-300'
-                      : undefined}
+                      : 'text-slate-300'}
                   >
                     {entry.text}
                   </div>
                 ))}
               </div>
-              <div className="flex items-center gap-2 border-t border-default-200 bg-zinc-900 p-3">
-                <Command size={16} className="text-zinc-400" />
-                <Input
+              <div className="flex items-center gap-2 border-t border-slate-700 bg-slate-900 p-3">
+                <Command size={16} className="text-slate-400" />
+                <input
                   aria-label="Lab command input"
-                  className="flex-1"
-                  variant="bordered"
+                  className="flex-1 rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none"
                   value={command}
-                  onValueChange={setCommand}
+                  onChange={(e) => setCommand(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Type a command (e.g. help, ls, edit src/service/payments.ts)"
-                  size="sm"
                 />
-                <Button color="primary" size="sm" onPress={handleSubmit}>
+                <button
+                  onClick={handleSubmit}
+                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+                >
                   Run
-                </Button>
+                </button>
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-foreground-500">
-              <span className="font-medium uppercase">Tips:</span>
-              <Tooltip content="List available files" placement="bottom">
-                <span>ls</span>
-              </Tooltip>
-              <Tooltip content="Preview a file" placement="bottom">
-                <span>cat &lt;path&gt;</span>
-              </Tooltip>
-              <Tooltip content="Open the inline editor" placement="bottom">
-                <span>edit &lt;path&gt;</span>
-              </Tooltip>
-              <Tooltip content="Check progress" placement="bottom">
-                <span>status</span>
-              </Tooltip>
-              <Tooltip content="Ask for help" placement="bottom">
-                <span>hint</span>
-              </Tooltip>
-              <Tooltip content="Validate your work" placement="bottom">
-                <span>validate</span>
-              </Tooltip>
+            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+              <span className="font-medium uppercase text-slate-700">Tips:</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="List available files">ls</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="Preview a file">cat &lt;path&gt;</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="Open the inline editor">edit &lt;path&gt;</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="Check progress">status</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="Ask for help">hint</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5" title="Validate your work">validate</span>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-lg border border-default-200 bg-content1/40 p-4">
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold uppercase tracking-wide">Task Checklist</h3>
-                <Button size="sm" color="primary" variant="solid" onPress={runValidation}>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">Task Checklist</h3>
+                <button
+                  onClick={runValidation}
+                  className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-700"
+                >
                   Validate
-                </Button>
+                </button>
               </div>
               <div className="space-y-3">
                 {taskStatuses.map((task) => (
-                  <div key={task.id} className="rounded border border-default-200 bg-content2/50 p-3">
+                  <div key={task.id} className="rounded border border-slate-200 bg-white p-3">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-medium">{task.title}</p>
-                      <Chip
-                        size="sm"
-                        color={task.complete ? 'success' : 'secondary'}
-                        variant="flat"
-                        startContent={<CheckCircle2 size={12} />}
-                      >
-                        {task.complete ? 'Complete' : 'Pending'}
-                      </Chip>
+                      <p className="text-sm font-medium text-slate-900">{task.title}</p>
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                        task.complete ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
+                      }`}>
+                        <CheckCircle2 size={12} /> {task.complete ? 'Complete' : 'Pending'}
+                      </span>
                     </div>
-                    <p className="mt-2 text-xs text-foreground-500">{task.description}</p>
+                    <p className="mt-2 text-xs text-slate-600">{task.description}</p>
                     {task.hint && !task.complete && (
-                      <p className="mt-2 text-xs text-foreground-400 italic">Hint: {task.hint}</p>
+                      <p className="mt-2 text-xs text-slate-500 italic">Hint: {task.hint}</p>
                     )}
                   </div>
                 ))}
@@ -472,14 +451,14 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
             </div>
 
             {scenario.resources && scenario.resources.length > 0 && (
-              <div className="rounded-lg border border-default-200 bg-content1/40 p-4 text-sm text-foreground-600">
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide">Supporting Resources</h3>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-900">Supporting Resources</h3>
                 <ul className="list-disc space-y-1 pl-5">
                   {scenario.resources.map((resource) => (
                     <li key={resource.href}>
                       <a
                         href={resource.href}
-                        className="text-primary hover:underline"
+                        className="text-blue-600 hover:underline"
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -492,38 +471,52 @@ export function LabConsole({ scenario }: { scenario: LabScenario }) {
             )}
           </div>
         </div>
-      </CardBody>
+      </div>
 
-      <Modal isOpen={!!editor?.open} onOpenChange={(open) => !open && setEditor(null)} size="3xl">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Editing {editor?.path}
-                {editor?.readOnly && <span className="text-xs text-danger">This file is read-only.</span>}
-              </ModalHeader>
-              <ModalBody>
-                <Textarea
-                  aria-label={`Editor for ${editor?.path ?? 'selected file'}`}
-                  minRows={16}
-                  value={editor?.value ?? ''}
-                  onValueChange={(value) => editor && setEditor({ ...editor, value })}
-                  isDisabled={editor?.readOnly}
-                  className="font-mono"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button color="primary" onPress={handleEditorSave} isDisabled={editor?.readOnly}>
-                  Save Changes
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </Card>
+      {/* Editor Modal */}
+      {editor?.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+          <div className="w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-slate-200 p-4">
+              <div>
+                <h3 className="font-semibold text-slate-900">Editing {editor?.path}</h3>
+                {editor?.readOnly && <p className="text-xs text-rose-600">This file is read-only.</p>}
+              </div>
+              <button
+                onClick={() => setEditor(null)}
+                className="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4">
+              <textarea
+                aria-label={`Editor for ${editor?.path ?? 'selected file'}`}
+                rows={16}
+                value={editor?.value ?? ''}
+                onChange={(e) => editor && setEditor({ ...editor, value: e.target.value })}
+                disabled={editor?.readOnly}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 p-3 font-mono text-sm text-slate-900 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+            <div className="flex justify-end gap-2 border-t border-slate-200 p-4">
+              <button
+                onClick={() => setEditor(null)}
+                className="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEditorSave}
+                disabled={editor?.readOnly}
+                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-slate-300"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

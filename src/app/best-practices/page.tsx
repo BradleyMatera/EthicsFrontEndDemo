@@ -13,7 +13,7 @@ import {
   Tabs,
   Tab,
   Progress
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { 
   Shield, 
   ArrowLeft, 
@@ -332,17 +332,17 @@ const decrypted = await vault.write('transit/decrypt/customer-data', {
           </div>
           <h1 className="text-4xl font-bold mb-4">Secrets Management Best Practices</h1>
           <p className="text-xl text-foreground-600 max-w-4xl mx-auto">
-            Comprehensive guide based on HashiCorp's 5 principles of secrets management and 
+            Comprehensive guide based on HashiCorp&apos;s 5 principles of secrets management and 
             industry-proven security practices for protecting sensitive data.
           </p>
         </div>
 
-        {/* HashiCorp's 5 Principles */}
+        {/* HashiCorp&apos;s 5 Principles */}
         <div className="mb-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-4">The 5 Pillars of Secrets Management</h2>
             <p className="text-foreground-600">
-              Based on HashiCorp's industry-leading security framework
+              Based on HashiCorp&apos;s industry-leading security framework
             </p>
           </div>
           
@@ -402,7 +402,7 @@ const decrypted = await vault.write('transit/decrypt/customer-data', {
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8">Implementation Roadmap</h2>
           <p className="text-center text-foreground-600 mb-8">
-            Choose your starting point based on your organization's size and security requirements
+            Choose your starting point based on your organization&apos;s size and security requirements
           </p>
           
           <div className="grid md:grid-cols-3 gap-6">

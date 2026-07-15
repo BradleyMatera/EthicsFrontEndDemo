@@ -20,7 +20,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  typedRoutes: true,
+  experimental: {},
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 };
 
 module.exports = nextConfig;

@@ -11,7 +11,7 @@ import {
   Chip,
   Divider,
   Link as NextUILink,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { 
   AlertTriangle, 
   ArrowLeft, 

@@ -1,21 +1,12 @@
 'use client';
 
-import { Link } from '@nextui-org/react';
-import { Github, Package, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { Github, ShieldCheck, ExternalLink } from 'lucide-react';
 
 const resourceLinks = [
-  {
-    label: 'Hardcoded Demo',
-    href: 'https://github.com/BradleyMatera/hardcoded-demo',
-  },
-  {
-    label: 'Environment Demo',
-    href: 'https://github.com/BradleyMatera/env-demo',
-  },
-  {
-    label: 'Shared Secrets Demo',
-    href: 'https://github.com/BradleyMatera/shared-demo',
-  },
+  { label: 'Hardcoded Demo', href: 'https://github.com/BradleyMatera/hardcoded-demo' },
+  { label: 'Environment Demo', href: 'https://github.com/BradleyMatera/env-demo' },
+  { label: 'Shared Secrets Demo', href: 'https://github.com/BradleyMatera/shared-demo' },
 ];
 
 const platformLinks = [
@@ -26,85 +17,67 @@ const platformLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-divider bg-default-50">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-12">
+    <footer className="border-t border-slate-200 bg-slate-900 text-slate-300">
+      <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <div className="mb-4 flex items-center gap-2">
-              <ShieldCheck className="text-primary" size={22} />
-              <p className="text-lg font-semibold">Node Secrets Guide</p>
-            </div>
-            <p className="text-sm text-foreground-500">
-              Practical, production-minded guidance for keeping API keys, credentials, and tokens out of
-              your source control while delivering repeatable workflows for every team.
+            <Link href="/" className="flex items-center gap-2 text-white">
+              <ShieldCheck className="text-blue-500" size={22} />
+              <span className="text-lg font-semibold">SecureLearn</span>
+            </Link>
+            <p className="mt-4 text-sm leading-relaxed text-slate-400">
+              Practical, production-minded guidance for keeping API keys, credentials, and tokens out of source control.
             </p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground-600">Example Repositories</p>
-            <ul className="mt-4 space-y-2 text-sm text-foreground-500">
+            <p className="text-sm font-semibold text-white">Example Repositories</p>
+            <ul className="mt-4 space-y-2 text-sm">
               {resourceLinks.map((item) => (
                 <li key={item.href}>
-                  <Link
-                    color="foreground"
-                    className="hover:text-primary"
+                  <a
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    size="sm"
+                    className="inline-flex items-center gap-1 text-slate-400 hover:text-white"
                   >
                     {item.label}
-                  </Link>
+                    <ExternalLink size={12} />
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground-600">Deployment References</p>
-            <ul className="mt-4 space-y-2 text-sm text-foreground-500">
+            <p className="text-sm font-semibold text-white">Deployment References</p>
+            <ul className="mt-4 space-y-2 text-sm">
               {platformLinks.map((item) => (
                 <li key={item.href}>
-                  <Link
-                    color="foreground"
-                    className="hover:text-primary"
+                  <a
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    size="sm"
+                    className="inline-flex items-center gap-1 text-slate-400 hover:text-white"
                   >
                     {item.label}
-                  </Link>
+                    <ExternalLink size={12} />
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-divider pt-6 text-sm text-foreground-500 md:flex-row">
-          <p>© {new Date().getFullYear()} Node Secrets Guide. All security examples audited quarterly.</p>
-          <div className="flex items-center gap-4">
-            <Link
-              color="foreground"
-              className="flex items-center gap-2 hover:text-primary"
-              href="https://github.com/BradleyMatera"
-              target="_blank"
-              rel="noreferrer"
-              size="sm"
-            >
-              <Github size={16} />
-              GitHub
-            </Link>
-            <Link
-              color="foreground"
-              className="flex items-center gap-2 hover:text-primary"
-              href="https://bun.sh/"
-              target="_blank"
-              rel="noreferrer"
-              size="sm"
-            >
-              <Package size={16} />
-              Built with Bun & Next.js
-            </Link>
-          </div>
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-6 text-sm text-slate-500 md:flex-row">
+          <p>© {new Date().getFullYear()} SecureLearn LMS. Educational use only.</p>
+          <a
+            href="https://github.com/BradleyMatera"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-white"
+          >
+            <Github size={16} />
+            GitHub
+          </a>
         </div>
       </div>
     </footer>
