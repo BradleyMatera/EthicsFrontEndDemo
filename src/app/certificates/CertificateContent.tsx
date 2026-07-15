@@ -1,13 +1,14 @@
 'use client';
 
-import { use } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Award, CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
 import { dataStore } from '@/lib/data-store';
 
-export default function CertificatePage({ params }: { params: Promise<{ certNumber: string }> }) {
-  const { certNumber } = use(params);
-  const cert = dataStore.getCertificate(certNumber);
+export default function CertificateContent() {
+  const searchParams = useSearchParams();
+  const certNumber = searchParams.get('certNumber') ?? '';
+  const cert = certNumber ? dataStore.getCertificate(certNumber) : null;
 
   if (!cert) {
     return (
@@ -15,7 +16,7 @@ export default function CertificatePage({ params }: { params: Promise<{ certNumb
         <XCircle className="mx-auto mb-4 text-rose-600" size={48} />
         <h1 className="text-2xl font-bold text-slate-900">Certificate Not Found</h1>
         <p className="mt-2 text-slate-600">
-          The certificate number <span className="font-mono">{certNumber}</span> does not exist.
+          The certificate number <span className="font-mono">{certNumber || 'unknown'}</span> does not exist.
         </p>
         <Link href="/" className="mt-6 inline-flex items-center gap-1 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
           <ArrowLeft size={16} /> Back Home
@@ -60,7 +61,7 @@ export default function CertificatePage({ params }: { params: Promise<{ certNumb
           </div>
           <hr className="my-6 border-slate-200" />
           <p className="text-xs text-slate-400">
-            SecureLearn LMS — Verify at https://securelearn.dev/certificates/{cert.certificateNumber}
+            SecureLearn LMS — Verify at https://securelearn.dev/certificates?certNumber={cert.certificateNumber}
           </p>
         </div>
       </div>

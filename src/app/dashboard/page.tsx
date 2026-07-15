@@ -241,7 +241,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <Link
-                  href={`/certificates/${cert.certificateNumber}`}
+                  href={`/certificates?certNumber=${cert.certificateNumber}`}
                   className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   View
